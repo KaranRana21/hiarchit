@@ -1,12 +1,12 @@
-import type { Metadata, Viewport } from "next";
-import "./globals.css";
-export const metadata: Metadata = {
-  title: { default: "Karan Rana — Creative Developer", template: "%s | Karan Rana" },
-  description: "Karan Rana builds expressive digital experiences, frontend systems, WordPress solutions and reliable web infrastructure. Explore work and get in touch.",
-  openGraph: { title: "Karan Rana — Creative Developer", description: "Original design, deliberate motion, production engineering.", type: "website" },
-  robots: { index: true, follow: true },
+import type {Metadata,Viewport} from 'next';
+import './globals.css';
+export const metadata:Metadata={
+  metadataBase:new URL('https://hiarchit-artful-karan-ranas-projects-87a15f72.vercel.app'),
+  title:{default:'Archit Jain — Frontend Engineer',template:'%s — Archit Jain'},
+  description:'Archit Jain is a frontend engineer building high-performance Angular and React applications. Explore his work on UMANG, ITPO Booking, AI translation and developer tooling.',
+  openGraph:{title:'Archit Jain — The Human Interface',description:'Engineering complex systems into human experiences.',type:'website'},
+  robots:{index:false,follow:false},
+  other:{'theme-color':'#101214'},
 };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#f4f4f0" };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
-}
+export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#101214'};
+export default function Layout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}

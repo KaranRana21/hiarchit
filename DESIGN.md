@@ -1,37 +1,31 @@
-# HiArchit → Artful Re-creation (Original Implementation)
+# THE HUMAN INTERFACE — Archit Jain
 
-## Reference & differentiation
-Reference for design intent: https://hiarchit.online/ — not source or asset reuse. This project reinterprets the *visual grammar*: creamy canvas, enormous solid/outline name, staggered second word, orbital stats, editorial WHO AM I, framed identity art, diagonal skills marquee, numbered work-history, separate work index, blog and contact overlay. Build independently in Next.js; no copied Angular component, portrait or signature.
+## Artful design thesis
 
-## Design thesis
-**The person behind the pixels works both sides of the stack.** Bold frontend authorship balanced with quiet systems reliability.
+- **Truth:** Archit builds complex frontend systems that feel intuitive to people.
+- **Tension:** engineered precision × human tactility. Cold metal × warm paper. Complexity × clarity.
+- **Adjectives:** sculptural, deliberate, warm.
+- **Never:** generic tech landing page, old HiArchit composition, neon purple SaaS aesthetic, stock headshots, invented credibility.
+- **Primary action:** inspect Archit's documented engineering projects, then contact him.
+- **First impression:** person with engineering depth and exceptional creative judgment.
+- **DESIGN_VARIANCE:** 9 / **MOTION_INTENSITY:** 8 / **VISUAL_DENSITY:** 3.
 
-- Audience: clients, collaborators and employers evaluating Karan's creative engineering.
-- Primary action: explore selected work, then email `hello@kailasam.dev`.
-- Tone: precise / playful / assured.
-- Tension: monumental typography vs intricate interactive engineering.
-- Never: generic dark agency landing page, neon blob template, fabricated social proof, motion that obstructs reading.
-- Dials: DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 3.
+## Art direction
 
-## Tokens
-- `--paper: #f4f4f0`, `--white: #fff`, `--ink: #1b1d19`, `--lime: #afe451`, `--muted: #61635d`.
-- Outfit display, DM Sans copy. Purposeful large wordmarks, compact tracked labels.
-- Spacious editorial two-column desktop; hero typography re-composed for tablet/phone.
-- Art: original canvas torus knot / orbital rings with reduced-motion CSS fallback; typographic identity frame replacing reference owner's photo.
+Deep near-black (#101214), mineral silver (#D6D7D5), warm porcelain (#EDEAE2), signal vermilion (#FF694A); steel reflections, fine measurement marks, editorial display typography. Refined work gallery. One living WebGL sculpture: constrained, product-shot studio lighting rather than random particles. Its orbit visually illustrates complex systems being shaped into coherent interfaces.
 
 ## Motion grammar
-- GSAP once-only masked hero words, section reveals, CSS hover feedback.
-- Continuous marquee and slow orbital spin only where composition earns it.
-- Intersection/visibility throttling of WebGL; no WebGL in reduced motion or when unavailable.
-- JS-free baseline remains legible and navigable.
 
-## Engineering gates
-- Next.js App Router, TS, plain authored CSS, GSAP, Three.js imported dynamically on client.
-- No external proprietary assets copied. Contact uses native accessible dialog.
-- Reduced motion, keyboard focus states, escape-to-close, touch navigation, route-specific metadata.
-- Responsive checkpoints: 320/360/390/430/768/1024/1440/1920, no horizontal overflow.
-- Target LCP <2.5s where realistic, no layout shift, reasonable JavaScript bundle and Lighthouse 90+ aspirational.
-- Site owner updates identity/content via `src/lib/site.ts`, work via `src/lib/projects.ts`, notes via `src/lib/notes.ts`.
+- Opening line composition (not forced loader) with gentle stagger.
+- 3D sculpture drifts at low speed; pointer input subtle, no scroll hijack.
+- Work cards show angled slab transform only on fine hover; keyboard/touch fully accessible.
+- Section entrance movements used only for content hierarchy.
+- Respect `prefers-reduced-motion`, `saveData`, weak/mobile devices, page visibility, and offscreen state. 3D static fallback always visible.
 
-## Known limitation
-No authorized portrait provided, so original branded portrait artwork substitutes for real photo. Replace with an owned portrait before personal launch if desired. Content is Karan's, not Archit's.
+## Evidence and asset contract
+
+Archit identity, contact, roles, education, 4 featured projects, metrics, skills and article titles sourced from original public HiArchit. Archit's portrait loaded from existing original-site public image URL. Resume points to original Google Drive URL. Articles linked to original full versions, not rewritten or misrepresented. Project artwork is newly designed abstract diagrams, **not screenshots** of live software. No new metrics or unverifiable endorsements.
+
+## Implementation / QA
+
+Next.js App Router, React, TypeScript, GSAP/ScrollTrigger, Three.js, CSS. Semantic HTML and visible focus. Full content crawlable. No external icon dependency. Dynamic WebGL import only when needed, capped DPR, intersection/visibility pause, cleanup. Audits: 320, 360, 390, 430, 768, 1024, 1440, 1920; keyboard, navigation, mobile menus, broken images, motion fallback, SEO. GitHub CI: TypeScript, lint, production build. Vercel preview domain; do **not** change hiarchit.online DNS.

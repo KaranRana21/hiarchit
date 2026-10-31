@@ -1,35 +1,25 @@
-# HiArchit-inspired Portfolio — Artful edition
+# Archit Jain — The Human Interface
 
-Original independent Next.js interpretation of the design experience at https://hiarchit.online/, built for Karan Rana using [Build Artful Websites](https://github.com/KaranRana21/build-artful-websites). Not affiliated with, or licensed by, HiArchit. No source files or personal assets taken from that repository.
+Original, full creative reimagination of [HiArchit](https://hiarchit.online) for **Archit Jain**, designed under [Build Artful Websites](https://github.com/KaranRana21/build-artful-websites).
 
 ## Run
 
 ```bash
 npm install
 npm run dev
+npm run typecheck
 npm run lint
 npm run build
 ```
 
-Next.js 16, React 19, TypeScript, GSAP, Three.js, CSS. Node.js 20.9+.
+## Art direction
 
-## Routes
+Read [`DESIGN.md`](DESIGN.md). Chrome sculpture: Three.js, production-safe pause/dispose. Motion: GSAP ScrollTrigger; prefers-reduced-motion respected. No preloader. Single dark-to-paper editorial narrative.
 
-- `/` — Hero, About, Experience, Work, Contact
-- `/work` — project index
-- `/blog` — short editorial notes
-- `/blog/[slug]` — note detail
+## Content / sources
 
-## Customize
+All identity info, achievements, company, university, social links, resume and 4 case studies grounded in Archit's existing HiArchit portfolio, not Karan's. Actual portrait referenced from existing site (`https://hiarchit.online/assets/images/profile_1.svg`), not duplicated. Blog index links to full original articles until source content is migrated; doesn't invent summaries/long-form articles. New project artwork is labeled conceptual/diagrammatic.
 
-1. `src/lib/site.ts` — identity, links, experience, skills.
-2. `src/lib/projects.ts` — real work and URLs. Current data is representative studio/client work; verify statuses before public release.
-3. `src/lib/notes.ts` — articles.
-4. `src/app/globals.css` — design and responsive composition.
-5. `src/components/Orbital.tsx` — procedural original Three.js art.
+## Deploy
 
-Set `NEXT_PUBLIC_SITE_URL` to final deployed public URL to update sitemap and robots.
-
-## QA
-
-Test viewport widths 320, 360, 390, 430, 768, 1024, 1440, 1920; mobile menu, native contact dialog, work URLs, keyboard links, reduced motion, WebGL disabled, image loading, 404, canonical URL and Lighthouse.
+Push to `KaranRana21/hiarchit`. Vercel project `hiarchit-artful` connected to GitHub `main`. Do not attach or change Archit's production `hiarchit.online` domain until approved.

@@ -1,10 +1,7 @@
-node_modules/
-.next/
-out/
-build/
+node_modules
+.next
+out
+.vercel
 .env*
-!.env.example
-.vercel/
-.DS_Store
-*.log
 *.tsbuildinfo
+.DS_Store

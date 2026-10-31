@@ -1,2 +1,2 @@
-import { Portfolio } from "@/components/Portfolio";
-export default function Home() { return <Portfolio />; }
+import {Home} from '@/components/Home';
+export default function Page(){return <Home/>}
