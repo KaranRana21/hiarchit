@@ -20,6 +20,8 @@ jobs:
           echo "039c3958cf933c72528b85fc8d22d09484ba1f6a27058752a3be4e39888bd1cd  /tmp/archit-redesign.tar.xz" | sha256sum -c -
           git ls-files -z | xargs -0 -r rm -f --
           tar -xJf /tmp/archit-redesign.tar.xz
+          git show HEAD:.github/workflows/verify.yml > .github/workflows/verify.yml
+          git show HEAD:.github/workflows/import-artful.yml > .github/workflows/import-artful.yml
           git add -A
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Build original 3D portfolio for Archit Jain with Artful"
           git push origin HEAD:main
