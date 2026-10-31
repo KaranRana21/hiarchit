@@ -11,7 +11,7 @@ let checks=0;const failures=[];
 async function run(width){
  const mobile=width<=768;
  const context=await browser.newContext({viewport:{width,height:mobile?820:900},deviceScaleFactor:1,
-   reducedMotion:width===320?'reduce':'no-preference'});
+   reducedMotion:width===360?'reduce':'no-preference'});
  const page=await context.newPage();const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  const test=async(label,fn)=>{checks++;try{await fn();console.log('PASS '+width+'px '+label)}
