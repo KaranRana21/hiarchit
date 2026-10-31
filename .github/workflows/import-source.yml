@@ -1,0 +1,24 @@
+name: Import Artful portfolio source
+on:
+  push:
+    branches: [main]
+    paths: [".source-import.tar.xz"]
+permissions:
+  contents: write
+jobs:
+  import-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Extract source
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -xJf .source-import.tar.xz
+          rm .source-import.tar.xz
+          rm .github/workflows/import-source.yml
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Import original Artful portfolio source"
+          git push origin HEAD:main
