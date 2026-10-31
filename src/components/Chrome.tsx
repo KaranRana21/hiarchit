@@ -6,7 +6,7 @@ import {person} from '@/lib/content';
 
 export function Header(){
  const pathname=usePathname();const [open,setOpen]=useState(false);const [scrolled,setScrolled]=useState(false);
- useEffect(()=>{setOpen(false)},[pathname]);
+
  useEffect(()=>{const cb=()=>setScrolled(window.scrollY>28);cb();window.addEventListener('scroll',cb,{passive:true});return()=>window.removeEventListener('scroll',cb)},[]);
  useEffect(()=>{if(!open)return;const esc=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpen(false)};window.addEventListener('keydown',esc);return()=>window.removeEventListener('keydown',esc)},[open]);
  return <header className={'header '+(scrolled?'header-scrolled':'')}><div className="header-inner shell">
