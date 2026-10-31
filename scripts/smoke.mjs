@@ -110,6 +110,14 @@ async function inspect(width) {
     if ([390, 1440].includes(width)) {
       await page.goto(origin);
       await page.waitForTimeout(2300);
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 720) {
+          window.scrollTo(0, y);
+          await new Promise(resolve => setTimeout(resolve, 130));
+        }
+        window.scrollTo(0, 0);
+      });
+      await page.waitForTimeout(1500);
       await page.screenshot({ path: output + '/home-' + width + '.png', fullPage: true });
     }
   } finally {
