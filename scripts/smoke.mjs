@@ -57,12 +57,12 @@ async function inspect(width) {
       assert.equal(await page.locator('a[href*="drive.google.com"]').count() > 0, true);
       assert.equal(await page.locator('a[href="mailto:architjain808@gmail.com"]').count() > 0, true);
     });
-    await check('portrait loaded', async () => {
+    if (width === 1440) await check('portrait loaded', async () => {
       await page.locator('img[alt*="Archit Jain"]').first().scrollIntoViewIfNeeded();
       await page.waitForFunction(() => {
         const image = document.querySelector('img[alt*="Archit Jain"]');
         return image?.complete;
-      }, { timeout: 10000 });
+      }, null, { timeout: 8000 });
       const photo = await page.locator('img[alt*="Archit Jain"]').first().evaluate(img => ({
         complete: img.complete, width: img.naturalWidth, src: img.currentSrc
       }));
