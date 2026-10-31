@@ -20,7 +20,7 @@ async function run(width){
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('h1').waitFor({state:'visible',timeout:20000});
-  await page.waitForTimeout(550);
+  await page.waitForTimeout(1350);
   await test('Archit identity',async()=>{
    assert.equal(await page.locator('h1').count(),1);
    assert.match(await page.title(),/Archit Jain/);
@@ -60,6 +60,15 @@ async function run(width){
    });
   }
   if(width===1440){
+   await test('WebGL studio sculpture active',async()=>{
+    await page.waitForTimeout(1900);
+    const state=await page.evaluate(()=>({
+      capable:!!document.createElement('canvas').getContext('webgl2'),
+      live:!!document.querySelector('.artifact-webgl.webgl-live')
+    }));
+    console.log('SCULPTURE STATE '+JSON.stringify(state));
+    if(state.capable)assert.equal(state.live,true,'WebGL supported but scene not active');
+   });
    await test('Archit portrait load',async()=>{
     await page.locator('img[alt*="Archit Jain"]').first().scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>{const i=document.querySelector('img[alt*="Archit Jain"]');return i?.complete;},null,{timeout:8000});
