@@ -2,7 +2,7 @@ name: Import Artful portfolio source
 on:
   push:
     branches: [main]
-    paths: [".source-import.tar.xz"]
+    paths: [".source-import.ready"]
 permissions:
   contents: write
 jobs:
@@ -16,9 +16,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tar -xJf .source-import.tar.xz
-          rm .source-import.tar.xz
-          rm .github/workflows/import-source.yml
+          cat .source-import.part* | base64 -d | tar -xJf -
+          rm -f .source-import.part* .source-import.ready .github/workflows/import-source.yml
           git add -A
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Import original Artful portfolio source"
           git push origin HEAD:main
