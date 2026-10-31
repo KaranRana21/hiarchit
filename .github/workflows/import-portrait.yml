@@ -1,0 +1,30 @@
+name: Bundle original Archit portrait
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/import-portrait.yml"]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch published portrait from Archit's repository
+        run: |
+          set -euo pipefail
+          mkdir -p public
+          curl -fL --retry 3 --max-time 90 \
+            https://raw.githubusercontent.com/architjain808/Hiarchit/main/public/assets/images/profile_1.svg \
+            -o public/archit-portrait.svg
+          test "$(wc -c < public/archit-portrait.svg)" -gt 300000
+          grep -qi '<svg' public/archit-portrait.svg
+      - name: Commit portrait and remove one-time workflow
+        run: |
+          set -euo pipefail
+          rm .github/workflows/import-portrait.yml
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Bundle Archit portrait for reliable local loading"
+          git push origin HEAD:main
