@@ -1,5 +1,5 @@
 'use client';
-import {useRef,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {projects} from '@/lib/content';
 import {ProjectArt} from '@/components/ProjectArt';
@@ -7,11 +7,13 @@ import {ProjectArt} from '@/components/ProjectArt';
 export function SpatialWork(){
  const [current,setCurrent]=useState(0);
  const touchX=useRef<number|null>(null);
+ const readyRef=useRef<HTMLElement|null>(null);
+ useEffect(()=>{readyRef.current?.setAttribute('data-hydrated','true')},[]);
  const total=projects.length;
  const go=(direction:number)=>setCurrent(i=>(i+direction+total)%total);
  const pick=(i:number)=>setCurrent(i);
  const selected=projects[current];
- return <section className="exhibition" id="selected-work" aria-labelledby="selected-title">
+ return <section ref={readyRef} className="exhibition" id="selected-work" aria-labelledby="selected-title">
   <div className="frame exhibition-frame">
    <div className="section-heading-row"><span className="micro-label">02 — THE BODY OF WORK</span><span className="micro-label">SELECTED / 2023—2024</span></div>
    <div className="exhibition-title-row"><h2 id="selected-title">Selected <em>realities.</em></h2><p>Four different problems. One obsession: engineering complex systems into interfaces people understand.</p></div>
