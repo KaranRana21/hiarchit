@@ -6,7 +6,7 @@ export const person = {
   x: 'https://x.com/ArchitJ808',
   instagram: 'https://www.instagram.com/_archit.jain_',
   resume: 'https://drive.google.com/file/d/1EB7sm0s2JdGwiux5YC6yiQYeTxyi5wTN/view?usp=sharing',
-  portrait: 'https://hiarchit.online/assets/images/profile_1.svg',
+  portrait: '/archit-portrait.svg',
   bio: 'I build high-performance, scalable frontend applications — from public-service platforms to real-time tools. I work where thoughtful product design meets robust engineering.',
   education: { degree:'B.Tech — Computer Science', university:'Kurukshetra University', period:'2018 — 2022' },
   job: { role:'Associate IT (SDE 2)', company:'Daffodils Software', since:'January 2022 — Present', url:'https://www.daffodilsw.com/' }
