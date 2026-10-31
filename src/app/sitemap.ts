@@ -1,7 +1,4 @@
 import type { MetadataRoute } from "next";
-// Set NEXT_PUBLIC_SITE_URL to production domain after domain selection.
-export default function sitemap(): MetadataRoute.Sitemap {
-  const site = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!site) return [];
-  return ["", "/work", "/journal"].map(path => ({ url: site.replace(/\/$/, "") + path, lastModified: new Date() }));
-}
+import { notes } from "@/lib/notes";
+// Set NEXT_PUBLIC_SITE_URL to public deployment URL to produce absolute, correct sitemap entries.
+export default function sitemap(): MetadataRoute.Sitemap {const base=(process.env.NEXT_PUBLIC_SITE_URL||"https://karanrana.co.in").replace(/\/$/,"");return ["", "/work", "/blog", ...notes.map(n=>`/blog/${n.slug}`)].map(path=>({url:base+path,changeFrequency:"monthly",priority:path===""?1:.5}));}

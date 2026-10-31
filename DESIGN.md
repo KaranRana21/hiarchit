@@ -1,37 +1,37 @@
-# Karan Rana — Creative Development Portfolio
+# HiArchit → Artful Re-creation (Original Implementation)
 
-## Creative thesis
-An engineer with a designer's eye. The site should feel like an independent art-direction and interaction practice, not a generic resume template.
+## Reference & differentiation
+Reference for design intent: https://hiarchit.online/ — not source or asset reuse. This project reinterprets the *visual grammar*: creamy canvas, enormous solid/outline name, staggered second word, orbital stats, editorial WHO AM I, framed identity art, diagonal skills marquee, numbered work-history, separate work index, blog and contact overlay. Build independently in Next.js; no copied Angular component, portrait or signature.
 
-- **Memorable truth:** visual confidence backed by technical depth.
-- **Keywords:** editorial, precise, kinetic.
-- **Tension:** warm print-design materials versus cool systems thinking.
-- **First impression:** oversized typographic identity + original procedural sculpture.
-- **Primary action:** explore real work and get in touch via direct email.
-- **Anti-goals:** visual clone of reference; invented social proof; blank decorative sections; slow loading ceremony.
+## Design thesis
+**The person behind the pixels works both sides of the stack.** Bold frontend authorship balanced with quiet systems reliability.
 
-## Design dials
-- DESIGN_VARIANCE 9/10
-- MOTION_INTENSITY 7/10 (experienced through a few memorable moments, not everywhere)
-- VISUAL_DENSITY 3/10
+- Audience: clients, collaborators and employers evaluating Karan's creative engineering.
+- Primary action: explore selected work, then email `hello@kailasam.dev`.
+- Tone: precise / playful / assured.
+- Tension: monumental typography vs intricate interactive engineering.
+- Never: generic dark agency landing page, neon blob template, fabricated social proof, motion that obstructs reading.
+- Dials: DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 3.
 
-## Visual doctrine
-- Matte near-black (`#1a1d1b`), warm paper (`#eae9e1`), coral vermilion (`#f66a45`).
-- Compressed oversized sans display; humane editorial italic in Georgia for contrast.
-- Strong typographic line breaks. Off-axis secondary labels. Sections alternate expansive silence and dense project imagery.
-- Project images are original abstract typographic compositions (not scraped source photos or stolen brands).
-- 3D hero: a procedural sculptural knot in Three.js, with WebGL/reduced-motion fallback.
-- Motion: one hero reveal; selective on-scroll entrances; marquee; responsive hover affordances; no fake loader.
-- Desktop: split identity and sculpture. Mobile: sculpture subdued behind headline; controls stay visible.
+## Tokens
+- `--paper: #f4f4f0`, `--white: #fff`, `--ink: #1b1d19`, `--lime: #afe451`, `--muted: #61635d`.
+- Outfit display, DM Sans copy. Purposeful large wordmarks, compact tracked labels.
+- Spacious editorial two-column desktop; hero typography re-composed for tablet/phone.
+- Art: original canvas torus knot / orbital rings with reduced-motion CSS fallback; typographic identity frame replacing reference owner's photo.
 
-## Engineering
-Next.js App Router, TypeScript, TailwindCSS base with authored CSS, GSAP (on demand), Three.js (on demand), Vercel. SSR-rendered readable text. Semantic HTML, keyboard navigation, focus-visible, reduced-motion styling. Contact uses mailto and local copy action: no unconfigured form backend.
+## Motion grammar
+- GSAP once-only masked hero words, section reveals, CSS hover feedback.
+- Continuous marquee and slow orbital spin only where composition earns it.
+- Intersection/visibility throttling of WebGL; no WebGL in reduced motion or when unavailable.
+- JS-free baseline remains legible and navigable.
 
-## Performance budget
-Prioritize static first paint. Three.js and GSAP imported after mount. Cap device pixel ratio. Pause WebGL on background tab. Use no third-party images, fonts or widgets. Target ≥90 Lighthouse performance where realistic and ≥95 accessibility/SEO, verify from deployed site.
+## Engineering gates
+- Next.js App Router, TS, plain authored CSS, GSAP, Three.js imported dynamically on client.
+- No external proprietary assets copied. Contact uses native accessible dialog.
+- Reduced motion, keyboard focus states, escape-to-close, touch navigation, route-specific metadata.
+- Responsive checkpoints: 320/360/390/430/768/1024/1440/1920, no horizontal overflow.
+- Target LCP <2.5s where realistic, no layout shift, reasonable JavaScript bundle and Lighthouse 90+ aspirational.
+- Site owner updates identity/content via `src/lib/site.ts`, work via `src/lib/projects.ts`, notes via `src/lib/notes.ts`.
 
-## Content constraints
-Experience and project names reflect Karan's supplied background. FPVparts is explicitly in development. Some hospitality sites are concepts; no fabricated client claims or testimonials.
-
-## Reference
-Hiarchit (https://github.com/architjain808/Hiarchit) influenced editorial pacing only. No source or asset reuse: repo currently has no explicit license. Art direction follows KaranRana21/build-artful-websites.
+## Known limitation
+No authorized portrait provided, so original branded portrait artwork substitutes for real photo. Replace with an owned portrait before personal launch if desired. Content is Karan's, not Archit's.

@@ -1,8 +1,8 @@
-# Karan Rana — Artful Portfolio
+# HiArchit-inspired Portfolio — Artful edition
 
-Original interactive portfolio built with **Next.js 16**, TypeScript, Tailwind v4, GSAP and Three.js. Inspired by craft and interaction patterns, not copied from unlicensed source.
+Original independent Next.js interpretation of the design experience at https://hiarchit.online/, built for Karan Rana using [Build Artful Websites](https://github.com/KaranRana21/build-artful-websites). Not affiliated with, or licensed by, HiArchit. No source files or personal assets taken from that repository.
 
-## Local development
+## Run
 
 ```bash
 npm install
@@ -11,38 +11,25 @@ npm run lint
 npm run build
 ```
 
-Open http://localhost:3000.
+Next.js 16, React 19, TypeScript, GSAP, Three.js, CSS. Node.js 20.9+.
 
-## Deploy
+## Routes
 
-1. Create empty GitHub repository `KaranRana21/karan-portfolio-artful`.
-2. From this directory:
+- `/` — Hero, About, Experience, Work, Contact
+- `/work` — project index
+- `/blog` — short editorial notes
+- `/blog/[slug]` — note detail
 
-```bash
-git init
-git add .
-git commit -m "Build Artful creative portfolio"
-git branch -M main
-git remote add origin https://github.com/KaranRana21/karan-portfolio-artful.git
-git push -u origin main
-```
+## Customize
 
-3. Import repo in Vercel as Next.js project. No environment variables required. Once domain chosen, set `NEXT_PUBLIC_SITE_URL` to canonical URL and deploy again for sitemap.
+1. `src/lib/site.ts` — identity, links, experience, skills.
+2. `src/lib/projects.ts` — real work and URLs. Current data is representative studio/client work; verify statuses before public release.
+3. `src/lib/notes.ts` — articles.
+4. `src/app/globals.css` — design and responsive composition.
+5. `src/components/Orbital.tsx` — procedural original Three.js art.
 
-## Site map
-- `/` — motion-led portfolio, real projects, services, about, contact
-- `/work` — complete project index
-- `/journal` — original field notes
+Set `NEXT_PUBLIC_SITE_URL` to final deployed public URL to update sitemap and robots.
 
-## Design authority
-Follow [DESIGN.md](DESIGN.md), and install house Artful skill via:
+## QA
 
-```bash
-npx skills add KaranRana21/build-artful-websites --skill build-artful-websites
-```
-
-## Accessibility / QA
-Check at 320, 360, 390, 430, 768, 1024, 1440, 1920px. Test keyboard, mobile menu, copy email, WebGL disabled, `prefers-reduced-motion`, outbound project links, 404, Lighthouse and console errors. Images are original CSS artwork; no source images copied.
-
-## Reference rights
-The reference repository `architjain808/Hiarchit` is public but has no explicit license as inspected October 2026. This project contains **no copied code, images, text or assets** from that repository. Obtain permission before importing any.
+Test viewport widths 320, 360, 390, 430, 768, 1024, 1440, 1920; mobile menu, native contact dialog, work URLs, keyboard links, reduced motion, WebGL disabled, image loading, 404, canonical URL and Lighthouse.
