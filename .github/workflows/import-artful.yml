@@ -1,0 +1,31 @@
+name: Import Future Form redesign
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".artful-upload.ready"
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validate and unpack verified art direction
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .artful-upload.part* | base64 -d > /tmp/artful-site.tar.xz
+          echo "173526f3002331282af9e1de64efee84bd984f4042889a3997a9e262902d034c  /tmp/artful-site.tar.xz" | sha256sum -c -
+          tar -tJf /tmp/artful-site.tar.xz
+          tar -xJf /tmp/artful-site.tar.xz
+          rm -f .artful-upload.part* .artful-upload.ready .github/workflows/import-artful.yml
+      - name: Commit redesigned portfolio
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Build Future Form immersive 3D Archit portfolio"
+          git push origin HEAD:main
