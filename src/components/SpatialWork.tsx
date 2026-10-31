@@ -19,7 +19,7 @@ export function SpatialWork(){
    <div className="exhibition-title-row"><h2 id="selected-title">Selected <em>realities.</em></h2><p>Four different problems. One obsession: engineering complex systems into interfaces people understand.</p></div>
    <div className="exhibition-shell" aria-label="Interactive gallery of Archit Jain projects" onKeyDown={e=>{if(e.key==='ArrowRight'){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}}}>
     <div className="exhibition-toc"><div className="toc-head micro-label">INDEX / {String(total).padStart(2,'0')}</div>
-      {projects.map((p,i)=><button key={p.id} type="button" className={'toc-item '+(current===i?'toc-active':'')} aria-pressed={current===i} onClick={()=>pick(i)}><span>{p.id}</span><span>{p.name}</span><span className="toc-arrow">↗</span></button>)}
+      {projects.map((p,i)=><button key={p.id} type="button" className={'toc-item '+(current===i?'toc-active':'')} aria-pressed={current===i} onPointerDown={()=>pick(i)} onClick={()=>pick(i)}><span>{p.id}</span><span>{p.name}</span><span className="toc-arrow">↗</span></button>)}
       <div className="toc-footer micro-label">DRAG / SELECT / USE ARROWS</div>
     </div>
     <div className="stage-wrap" onTouchStart={e=>{touchX.current=e.touches[0]?.clientX??null}} onTouchEnd={e=>{if(touchX.current===null)return;const delta=(e.changedTouches[0]?.clientX??0)-touchX.current;if(Math.abs(delta)>44)go(delta<0?1:-1);touchX.current=null}}>
