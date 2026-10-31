@@ -2,7 +2,7 @@
 import {useEffect} from 'react';
 export function Motion(){useEffect(()=>{
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- let scope:import('gsap').Context|undefined;
+ let scope:{revert:()=>void}|undefined;
  let dead=false;
  (async()=>{
    const {default:gsap}=await import('gsap');
