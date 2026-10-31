@@ -44,6 +44,7 @@ async function run(width){
   });
   await test('project index',async()=>{
    assert.equal(await page.locator('button.toc-item').count(),4);
+   await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
    await page.locator('button.toc-item').nth(1).click();
    await page.waitForFunction(() => document.querySelectorAll('button.toc-item')[1]?.getAttribute('aria-pressed') === 'true', null, {timeout:4000});
    assert.match(await page.locator('.project-spotlight h3').innerText(),/ITPO Booking/);
