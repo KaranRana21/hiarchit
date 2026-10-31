@@ -1,31 +1,23 @@
-# THE HUMAN INTERFACE — Archit Jain
+# ARCHIT / FUTURE FORM — Artful 2026
 
-## Artful design thesis
+**Thesis:** Engineering is an act of shaping the invisible. Archit Jain translates systems at enormous scale into interfaces humans can trust.
 
-- **Truth:** Archit builds complex frontend systems that feel intuitive to people.
-- **Tension:** engineered precision × human tactility. Cold metal × warm paper. Complexity × clarity.
-- **Adjectives:** sculptural, deliberate, warm.
-- **Never:** generic tech landing page, old HiArchit composition, neon purple SaaS aesthetic, stock headshots, invented credibility.
-- **Primary action:** inspect Archit's documented engineering projects, then contact him.
-- **First impression:** person with engineering depth and exceptional creative judgment.
-- **DESIGN_VARIANCE:** 9 / **MOTION_INTENSITY:** 8 / **VISUAL_DENSITY:** 3.
+**Visual language:** a luxury-futurist exhibition of digital sculpture, machined metal, polarised glass, contemporary typography, dramatic negative space, and architectural grids. Jet on slate, parchment, frozen platinum, quiet champagne gold. A deliberately custom environment—not the original HiArchit and not our prior “Human Interface.”
 
-## Art direction
+**Creative tension:** monumental dimensionality × precise restraint. Immersive three-dimensional objects without an exhausting “3D demo” or hidden information.
 
-Deep near-black (#101214), mineral silver (#D6D7D5), warm porcelain (#EDEAE2), signal vermilion (#FF694A); steel reflections, fine measurement marks, editorial display typography. Refined work gallery. One living WebGL sculpture: constrained, product-shot studio lighting rather than random particles. Its orbit visually illustrates complex systems being shaped into coherent interfaces.
+**Dials:** DESIGN_VARIANCE 9; MOTION_INTENSITY 8 (first view, spatial project index); VISUAL_DENSITY 2–3.
 
-## Motion grammar
+**Architecture:** hero is full-bleed sculpture stage; opening title is asymmetrically composed in two planes. Four cases live in a three-dimensional chapter selector with accessible previous/next buttons, direct buttons, keyboard ←/→ and swipe. Portrait anchored in high-contrast editorial About; experience/metrics remain verifiable. Six original journal entries link to Archit's public writing. Resume and all socials preserved.
 
-- Opening line composition (not forced loader) with gentle stagger.
-- 3D sculpture drifts at low speed; pointer input subtle, no scroll hijack.
-- Work cards show angled slab transform only on fine hover; keyboard/touch fully accessible.
-- Section entrance movements used only for content hierarchy.
-- Respect `prefers-reduced-motion`, `saveData`, weak/mobile devices, page visibility, and offscreen state. 3D static fallback always visible.
+**Motion grammar:** low-frequency 3D gyro, camera perspective and light reflections respond gently to pointer. Project stage uses 600ms depth/translation and 2D layout fallback. Content typographic entrance uses once per chapter, never reading interruption. Hover 180ms. No forced loader.
 
-## Evidence and asset contract
+**WebGL quality:** physically lit metal and nested frosted-glass icosahedra, PMREM studio reflections, tapered elliptical orbits, detailed triangulated exoskeleton, animated light sweep. Resize-observed, DPR ≤1.5, 30 FPS max, Visibility/Intersection gated, `saveData` / reduced-motion mobile fallback, clean resource disposal. No downloaded 3D models or unauthorized imagery.
 
-Archit identity, contact, roles, education, 4 featured projects, metrics, skills and article titles sourced from original public HiArchit. Archit's portrait loaded from existing original-site public image URL. Resume points to original Google Drive URL. Articles linked to original full versions, not rewritten or misrepresented. Project artwork is newly designed abstract diagrams, **not screenshots** of live software. No new metrics or unverifiable endorsements.
+**Color:** `#08090D` void; `#E9EBE8` chalk; `#C9B697` warm metallic highlight; `#8B98A8` muted steel; `#E9E6DE` editorial paper.
 
-## Implementation / QA
+**Evidence:** profile portrait bundled from Archit's original public repo. Bio, role, Daffodils Software, education, actual projects, impact figures, resume, email, socials and journal titles from original source. No invented awards/clients/experience. Images in work gallery are editorial original diagrams and are labelled as concept visualization rather than site screenshots.
 
-Next.js App Router, React, TypeScript, GSAP/ScrollTrigger, Three.js, CSS. Semantic HTML and visible focus. Full content crawlable. No external icon dependency. Dynamic WebGL import only when needed, capped DPR, intersection/visibility pause, cleanup. Audits: 320, 360, 390, 430, 768, 1024, 1440, 1920; keyboard, navigation, mobile menus, broken images, motion fallback, SEO. GitHub CI: TypeScript, lint, production build. Vercel preview domain; do **not** change hiarchit.online DNS.
+**Responsive:** 320–1920 px, hero sculpture scales and becomes static on mobile/saveData/reduced motion, cases switch to single-stage content with touch swipe, navigation remains accessible. Keyboard and visible focus. SEO noindex on preview until archit owns domain.
+
+**Target:** Next.js App Router, TypeScript, GSAP ScrollTrigger, Three.js. Vercel. CI tests required before user signoff.

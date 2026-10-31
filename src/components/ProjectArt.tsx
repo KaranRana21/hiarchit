@@ -1,12 +1,9 @@
 import type {Project} from '@/lib/content';
-import type {CSSProperties} from 'react';
-export function ProjectArt({project}:{project:Project}){
- return <div className={'project-art project-art-'+project.art} style={{'--tone':project.tone} as CSSProperties} role="img" aria-label={'Conceptual visual diagram for '+project.name+', not actual product screenshot'}>
-   <div className="art-grid"/><span className="art-corner art-corner-tl">+</span><span className="art-corner art-corner-tr">+</span><span className="art-corner art-corner-bl">+</span><span className="art-corner art-corner-br">+</span>
-   {project.art==='civic'&&<div className="art-object art-civic"><div className="civic-orbit orbit-a"/><div className="civic-orbit orbit-b"/><div className="civic-center">01<span> / PUBLIC</span></div><div className="civic-node node-a"/><div className="civic-node node-b"/><div className="civic-node node-c"/></div>}
-   {project.art==='architecture'&&<div className="art-object art-architecture"><div className="architecture-plane plane-one"/><div className="architecture-plane plane-two"/><div className="architecture-plane plane-three"/><div className="architecture-circle">ITPO</div></div>}
-   {project.art==='language'&&<div className="art-object art-language"><span className="lang-glyph glyph-one">अ</span><span className="lang-glyph glyph-two">A</span><div className="lang-connector"><span/><span/><span/></div><span className="lang-caption">TRANSLATE / TRANSCEND</span></div>}
-   {project.art==='ai'&&<div className="art-object art-ai"><div className="ai-graph"><i/><i/><i/><i/><i/><i/></div><div className="ai-center">TT<span> / 04</span></div></div>}
-   <div className="art-bottom mono"><span>FIG. {project.id} / ARTISTIC INTERPRETATION</span><span>{project.year} ↗</span></div>
- </div>
-}
+export function ProjectArt({project}:{project:Project}){return <div className={'concept-art concept-'+project.art} role="img" aria-label={'Art-directed abstract visualization of '+project.name+'; not a screenshot'}>
+  <div className="concept-grid"/><div className="concept-no">ARCHIVE / {project.id}</div>
+  {project.art==='civic'&&<div className="civic-object"><div className="civic-globe"/><span className="civic-wire wire-a"/><span className="civic-wire wire-b"/><span className="civic-label">UNIFIED<br/>INDIA</span></div>}
+  {project.art==='architecture'&&<div className="building-object"><div className="building-face face-a"/><div className="building-face face-b"/><div className="building-face face-c"/><div className="building-tower">ITPO</div></div>}
+  {project.art==='language'&&<div className="language-object"><span className="language-script">अ</span><span className="language-arrow">→</span><span className="language-english">A</span><div className="language-orbit"/></div>}
+  {project.art==='ai'&&<div className="ai-object"><div className="ai-crystal"><i/><i/><i/><i/></div><span className="ai-name">TT / INTELLIGENCE</span></div>}
+  <div className="concept-bottom"><span>IMAGINED VISUAL / {project.year}</span><span>↗</span></div>
+ </div>}
