@@ -109,6 +109,7 @@ async function inspect(width) {
     });
     if ([390, 1440].includes(width)) {
       await page.goto(origin);
+      await page.waitForTimeout(2300);
       await page.screenshot({ path: output + '/home-' + width + '.png', fullPage: true });
     }
   } finally {
