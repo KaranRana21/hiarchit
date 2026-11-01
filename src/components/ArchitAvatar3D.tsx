@@ -62,10 +62,9 @@ export function ArchitAvatar3D({paused=false}:{paused?:boolean}){
     const shin=shape(new THREE.CylinderGeometry(.37,.28,1.55,30),navy);
     shin.position.set(side*.6,-5.38,-.53);
     shin.rotation.z=side*.02;
-    const shoe=shape(new THREE.SphereGeometry(1,28,16),graphiteDark());
+    const shoe=shape(new THREE.SphereGeometry(1,28,16),suit);
     shoe.scale.set(.54,.29,.87);shoe.position.set(side*.6,-6.19,.14);
    }
-   function graphiteDark(){return suit}
    const neck=shape(new THREE.CylinderGeometry(.39,.48,.72,28),skin);
    neck.position.set(0,-.55,-.15);
    // Cutout portrait is a photo plane; perspective limited to a few degrees
