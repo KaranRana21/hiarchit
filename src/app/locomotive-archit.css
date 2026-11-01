@@ -304,3 +304,6 @@ h1,h2,h3,p{margin:0}h1,h2,h3{font-family:var(--l-font)}.l-inner{width:100%;paddi
 /* Finishing passes: keep contextual hero information outside fixed navigation. */
 .l-hero-eyebrow{position:absolute;top:114px;left:var(--l-gutter);right:var(--l-gutter)}
 @media(max-width:600px){.l-hero-eyebrow{top:84px;left:var(--l-gutter);right:var(--l-gutter)}}
+
+/* Long editorial heading must fit 320px with adjacent count. */
+@media(max-width:600px){.l-capabilities .l-extras-heading{gap:6px}.l-capabilities .l-extras-heading h2{font-size:clamp(35px,10.5vw,70px)}.l-capabilities .l-extras-heading>span{font-size:19px}}
