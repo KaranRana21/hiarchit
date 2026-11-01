@@ -1,6 +1,7 @@
 import type {Metadata,Viewport} from 'next';
 import './globals.css';
 import './gravity-reimagined.css';
+import './archit-avatar.css';
 export const metadata:Metadata={
   metadataBase:new URL('https://hiarchit-artful-karan-ranas-projects-87a15f72.vercel.app'),
   title:{default:'Archit Jain — Frontend Engineer',template:'%s — Archit Jain'},
