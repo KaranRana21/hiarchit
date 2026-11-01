@@ -21,3 +21,17 @@
 **Responsive:** 320–1920 px, hero sculpture scales and becomes static on mobile/saveData/reduced motion, cases switch to single-stage content with touch swipe, navigation remains accessible. Keyboard and visible focus. SEO noindex on preview until archit owns domain.
 
 **Target:** Next.js App Router, TypeScript, GSAP ScrollTrigger, Three.js. Vercel. CI tests required before user signoff.
+
+## November 2026 — Gravity Chamber / Type System v2
+
+**Creative thesis:** Digital products have weight, depth, gravity. Archit Jain gives complex systems a human center. Hero: an optical sculpture with suspended glass core and asymmetric precision-metal arcs. The illustration is original procedural Three.js, not a purchased asset or another metallic letter.
+
+**Visual tension:** Swiss editorial clarity x spatial optical engineering. Gallery-like negative space, platinum/titanium light, subtle glacier-green luminous accents, confident asymmetry. Avoid generic gradient blobs, center-hero templates, excessive neon, unreadable micro labels.
+
+**Hero composition:** 49/51 asymmetric stage; architectural two-line statement; Archit's name and frontend role in clear H1; concise specific introduction, primary Work and secondary Resume actions; interactive 3D portal with draggable inertia and a user-facing motion toggle. On mobile a composed optical sculpture remains visible without WebGL.
+
+**Typography:** Syne 650–800 for display; Plus Jakarta Sans 500–800 for paragraphs/UI; IBM Plex Mono 600+ for meta. Minimum 10px utility at 320px, 11px typical desktop, reduced tracking, stronger contrast. No tiny weight-400 microcopy; no empty stylistic line spacing.
+
+**Motion engineering:** 30fps max, DPR 1.45, Intersection/visibility-gated, no external textures or 3D models, WebGL fallback for <=720px, reduced motion, saveData. Pausing motion stops idle movement while retaining drag control. No loader, no hidden text before hydration.
+
+**Functional requirement:** All existing Archit content, photo, projects, verified data, resume, socials, Work and Journal retained. Preview noindex. QA widths 320–1920, no clipping, readable metadata, keyboard/touch navigation, correct resume/email links, WebGL activation and fallback.
