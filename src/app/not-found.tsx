@@ -1,2 +1,3 @@
 import Link from 'next/link';
-export default function NotFound(){return <main className="not-found"><p className="mono eyebrow">ERROR / 404</p><h1>Wrong turn.<br/><em>Still exploring?</em></h1><Link className="pill" href="/">Back to Archit <span>↗</span></Link></main>}
+import {LocoHeader,LocoFooter} from '@/components/LocomotiveChrome';
+export default function NotFound(){return <><LocoHeader/><main className="l-inner-page"><section className="l-inner l-inner-hero"><div className="l-inner-kicker"><span>PAGE NOT FOUND / 404</span><span>ARCHIT JAIN — 2026</span></div><h1 className="l-inner-title">OFF<br/><em>TRACK.</em></h1><p className="l-inner-intro">Nothing at this address. Find your way back to the good stuff.</p><div style={{marginTop:48}}><Link href="/" className="l-arrow-button">BACK TO HOME <span>↗</span></Link></div></section></main><LocoFooter/></>}
