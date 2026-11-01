@@ -2,21 +2,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {Header,Footer} from '@/components/Chrome';
-import {Artifact3D} from '@/components/Artifact3D';
+import {HeroReborn} from '@/components/HeroReborn';
 import {SpatialWork} from '@/components/SpatialWork';
 import {Motion} from '@/components/Motion';
 import {person,outcomes,competencies,achievements,articles,originalArticleUrl} from '@/lib/content';
 
 export function Home(){return <><Motion/><Header/><main>
- <section className="opening" id="top" aria-label="Archit Jain — frontend engineer portfolio">
-  <div className="opening-grain" aria-hidden="true"/>
-  <div className="opening-lines" aria-hidden="true"><i/><i/><i/><i/></div>
-  <div className="opening-information frame"><span className="micro-label opening-index">PORTFOLIO / VOL. 01</span><span className="micro-label opening-year">ENGINEERING THE EXPERIENCE — © 2026</span></div>
-  <div className="opening-stage"><Artifact3D/></div>
-  <div className="opening-type frame"><h1 className="opening-name"><span className="name-first">ARCHIT</span><span className="name-last">JAIN<span className="dot">.</span></span></h1></div>
-  <div className="opening-bottom frame"><p>Engineering digital experiences<br/>beyond the expected.</p><div className="opening-discover"><a href="#selected-work" className="opening-circle" aria-label="Explore Archit Jain's work">↓</a><span className="micro-label">SCROLL TO EXPLORE</span></div><span className="opening-trail micro-label">CREATIVE ENGINEERING<br/>MADE HUMAN / 001</span></div>
-  <div className="vertical-edge edge-one micro-label">42.0°N / WORK IN PROGRESS</div><div className="vertical-edge edge-two micro-label">SCULPTURE / LIVE SYSTEM</div>
- </section>
+ <HeroReborn/>
  <section className="statement" id="statement"><div className="frame statement-frame"><div className="statement-intro"><span className="micro-label">01 / DESIGN IS ENGINEERING</span><span className="statement-asterisk">✳</span></div><p>COMPLEX SYSTEMS.<br/><em>EFFORTLESS</em> EXPERIENCES.</p><div className="statement-sub"><span className="micro-label">THE PRACTICE</span><p>Archit Jain is a frontend engineer bridging product intuition and technical precision. Building interfaces that hold up when scale gets serious.</p></div></div></section>
  <div className="achievement-rail"><div className="frame rail-grid">{outcomes.map((s,i)=><div className="rail-stat" key={s.value}><span className="micro-label">0{i+1} / EVIDENCE</span><strong>{s.value}</strong><div><b>{s.label}</b><span>{s.desc}</span></div></div>)}</div></div>
  <SpatialWork/>
