@@ -28,7 +28,7 @@ export function SiteLoader(){
   try{seen=sessionStorage.getItem(KEY)==='1'}catch{}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData=(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
-  if(seen||reduced||saveData){finish(true);return}
+  if(seen||reduced||saveData){const id=window.setTimeout(()=>finish(true),0);return()=>window.clearTimeout(id)}
   const oldOverflow=document.body.style.overflow;
   document.body.style.overflow='hidden';
   let raf=0,finished=false;
