@@ -31,7 +31,7 @@ async function run(width){
    assert.equal(await page.locator('section.gravity-hero').count(),1);
    assert.equal(await page.locator('.gravity-hero-title').count(),1);
    assert.match(await page.locator('.gravity-hero-name').innerText(),/ARCHIT JAIN/);
-   assert.ok(await page.locator('.gravity-still-core').count()===1);
+   assert.ok(await page.locator('.archit-avatar-fallback img[src="/archit-portrait.svg"]').count()===1);
   });
   await test('hero display type not clipped',async()=>{
    if(width>520)return;
@@ -58,9 +58,9 @@ async function run(width){
    assert.ok(await page.locator('a[href^="mailto:architjain808@gmail.com"]').count()>0);
   });
   await test('sculpture fallback available',async()=>{
-   assert.equal(await page.locator('.artifact-fallback').count(),1);
+   assert.equal(await page.locator('.archit-avatar-fallback').count(),1);
    assert.ok((await page.locator('.artifact-stage').boundingBox())?.width>80);
-   if(width===320)assert.equal(await page.locator('.artifact-webgl.webgl-live').count(),0);
+   if(width===320)assert.equal(await page.locator('.archit-avatar-canvas.webgl-live').count(),0);
   });
   await test('project index',async()=>{
    assert.equal(await page.locator('button.toc-item').count(),4);
@@ -93,7 +93,7 @@ async function run(width){
     await page.waitForTimeout(1900);
     const state=await page.evaluate(()=>({
       capable:!!document.createElement('canvas').getContext('webgl2'),
-      live:!!document.querySelector('.artifact-webgl.webgl-live')
+      live:!!document.querySelector('.archit-avatar-canvas.webgl-live')
     }));
     console.log('SCULPTURE STATE '+JSON.stringify(state));
     if(state.capable)assert.equal(state.live,true,'WebGL supported but scene not active');
