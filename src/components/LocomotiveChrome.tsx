@@ -1,15 +1,17 @@
 'use client';
 import Link from 'next/link';
+import {usePathname} from 'next/navigation';
 import {useEffect,useState} from 'react';
 import {person} from '@/lib/content';
 
 export function LocoHeader(){
+ const pathname=usePathname();
  const [menu,setMenu]=useState(false);
  const [scrolled,setScrolled]=useState(false);
  useEffect(()=>{const onScroll=()=>setScrolled(window.scrollY>window.innerHeight*.78);onScroll();window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll)},[]);
  useEffect(()=>{if(!menu)return;const esc=(e:KeyboardEvent)=>{if(e.key==='Escape')setMenu(false)};window.addEventListener('keydown',esc);return()=>window.removeEventListener('keydown',esc)},[menu]);
  return <>
- <header className={'l-header '+(scrolled?'l-header-light':'')+(menu?' l-header-open':'')}>
+ <header className={'l-header '+((scrolled||pathname!=='/')?'l-header-light':'')+(menu?' l-header-open':'')}>
   <Link href="/" className="l-mark" aria-label="Archit Jain — Home"><span className="l-mark-shape" aria-hidden="true">✳</span> Archit<sup>®</sup></Link>
   <nav className="l-desktop-nav" aria-label="Main navigation">
    <Link href="/work">Work</Link><Link href="/#about">About</Link><Link href="/journal">Journal</Link>
