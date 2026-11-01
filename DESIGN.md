@@ -35,3 +35,11 @@
 **Motion engineering:** 30fps max, DPR 1.45, Intersection/visibility-gated, no external textures or 3D models, WebGL fallback for <=720px, reduced motion, saveData. Pausing motion stops idle movement while retaining drag control. No loader, no hidden text before hydration.
 
 **Functional requirement:** All existing Archit content, photo, projects, verified data, resume, socials, Work and Journal retained. Preview noindex. QA widths 320–1920, no clipping, readable metadata, keyboard/touch navigation, correct resume/email links, WebGL activation and fallback.
+
+## 3D portrait experiment — 1 November 2026
+
+**Brief:** Human presence replaces abstract Gravity Chamber optical centerpiece. Archit's actual public SVG portrait provides likeness. We stage this as a photo-textured plane in a real Three.js scene, with physically illuminated stylized torso/neck/arms, architectural orbital rings, rotation and a pedestal. It is an honest portrait-plus-3D sculptural composition, **not** a photogrammetry scan or an anatomically faithful full-body model.
+
+**Accuracy constraint:** Single published portrait lacks rear/side/full-body evidence. No arbitrary facial sculpture or claims of accurate proportions. Future true full-body GLB requires additional photos/character references and available generation credits; this version remains no-credit and entirely original geometry.
+
+**Performance & accessibility:** lazy WebGL on desktop only, pause control, 30fps cap, resize and visibility gating, reduced-motion/saveData/mobile image fallback; source portrait remains local.
