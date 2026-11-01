@@ -24,7 +24,7 @@ export function ArchitAvatar3D({paused=false}:{paused?:boolean}){
    renderer.toneMapping=THREE.ACESFilmicToneMapping;
    renderer.toneMappingExposure=1.6;
    const scene=new THREE.Scene();
-   const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,0,12.3);
+   const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,-1,17.8);camera.lookAt(0,-1,0);
    scene.add(new THREE.AmbientLight(0xdde7ff,2.1));
    const key=new THREE.DirectionalLight(0xe8f5ff,3);key.position.set(-3,5,7);scene.add(key);
    const rim=new THREE.PointLight(0xb7efdc,90,18);rim.position.set(3,1,-1);scene.add(rim);
@@ -52,6 +52,20 @@ export function ArchitAvatar3D({paused=false}:{paused?:boolean}){
     const seam=shape(new THREE.TorusGeometry(.59,.018,8,90,Math.PI*1.42),edge);
     seam.position.set(side*1.06,-1.62,.22);seam.rotation.set(.52,.3,side*.35);
    }
+   // Lower body is intentionally stylized: single photo cannot verify Archit's silhouette.
+   const hips=shape(new THREE.SphereGeometry(1,36,22),navy);
+   hips.scale.set(.95,.62,.6);hips.position.set(0,-3.34,-.54);
+   for(const side of [-1,1]){
+    const thigh=shape(new THREE.CylinderGeometry(.47,.36,1.5,32),navy);
+    thigh.position.set(side*.58,-4.12,-.55);
+    thigh.rotation.z=side*.035;
+    const shin=shape(new THREE.CylinderGeometry(.37,.28,1.55,30),navy);
+    shin.position.set(side*.6,-5.38,-.53);
+    shin.rotation.z=side*.02;
+    const shoe=shape(new THREE.SphereGeometry(1,28,16),graphiteDark());
+    shoe.scale.set(.54,.29,.87);shoe.position.set(side*.6,-6.19,.14);
+   }
+   function graphiteDark(){return suit}
    const neck=shape(new THREE.CylinderGeometry(.39,.48,.72,28),skin);
    neck.position.set(0,-.55,-.15);
    // Cutout portrait is a photo plane; perspective limited to a few degrees
@@ -67,14 +81,14 @@ export function ArchitAvatar3D({paused=false}:{paused?:boolean}){
    const halo2=shape(new THREE.TorusGeometry(2.9,.024,8,160),edge);
    halo2.position.set(0,.35,-1.24);halo2.rotation.set(1.04,.16,.08);
    const platform=shape(new THREE.CylinderGeometry(2.05,2.14,.24,72),navy);
-   platform.position.set(0,-4.25,-.3);
+   platform.position.set(0,-6.65,-.3);
    const rail=shape(new THREE.TorusGeometry(2.08,.04,12,120),edge);
-   rail.position.set(0,-4.12,-.3);rail.rotation.x=Math.PI/2;
+   rail.position.set(0,-6.52,-.3);rail.rotation.x=Math.PI/2;
    root.position.y=.45;
    let raf=0,previous=0,visible=true,px=0,py=0,deltaAngle=0,dragging=false,lastX=0;
    const resize=()=>{
     const b=el.getBoundingClientRect();if(b.width<1||b.height<1)return;
-    camera.aspect=b.width/b.height;camera.position.z=b.width<720?14:12.3;
+    camera.aspect=b.width/b.height;camera.position.z=b.width<720?19:17.8;
     camera.updateProjectionMatrix();renderer.setSize(b.width,b.height,false);
    };
    const ro=new ResizeObserver(resize);ro.observe(el);resize();
