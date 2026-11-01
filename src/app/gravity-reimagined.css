@@ -147,7 +147,7 @@ h1,h2,h3{font-family:var(--display)}
  .gravity-presence-dot{width:6px;height:6px}
  .gravity-hero-name{font-size:11px;letter-spacing:.015em;margin-bottom:14px}
  .gravity-hero-name span{display:block;font-size:10px}
- .gravity-headline-line{font-size:clamp(60px,15.2vw,83px);letter-spacing:-.085em}
+ .gravity-headline-line{font-size:clamp(48px,13.1vw,70px);letter-spacing:-.085em}
  .gravity-headline-second{font-size:clamp(29px,9.1vw,48px);letter-spacing:-.085em;margin-top:9px}
  .gravity-hero-deck{font-size:13px;line-height:1.82;max-width:360px;margin:18px 0 20px}
  .gravity-hero-actions{gap:18px}
