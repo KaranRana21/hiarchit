@@ -1,6 +1,6 @@
 'use client';
 import {useState} from 'react';
-import {GravityChamber3D} from '@/components/GravityChamber3D';
+import {ArchitAvatar3D} from '@/components/ArchitAvatar3D';
 import {person} from '@/lib/content';
 
 export function HeroReborn(){
@@ -30,11 +30,11 @@ export function HeroReborn(){
     <div className="gravity-object-halo" aria-hidden="true"/>
     <div className="gravity-object-axis axis-one" aria-hidden="true"/>
     <div className="gravity-object-axis axis-two" aria-hidden="true"/>
-    <div className="gravity-object-scene"><GravityChamber3D paused={paused}/></div>
-    <div className="gravity-object-topline"><span>01 / KINETIC STUDY</span><span>AJ—001</span></div>
+    <div className="gravity-object-scene"><ArchitAvatar3D paused={paused}/></div>
+    <div className="gravity-object-topline"><span>01 / HUMAN STUDY</span><span>AJ—PORTRAIT</span></div>
     <div className="gravity-object-caption">
-     <div><span className="gravity-object-overline">OBJECT / 001</span><strong>THE GRAVITY<br/>CHAMBER</strong></div>
-     <div className="gravity-object-operation"><span className="gravity-object-interaction">DRAG TO ORBIT</span><button type="button" aria-pressed={paused} className="gravity-motion-toggle" onClick={()=>setPaused(v=>!v)}>{paused?'RESUME MOTION':'PAUSE MOTION'} <span aria-hidden="true">{paused?'▶':'Ⅱ'}</span></button></div>
+     <div><span className="gravity-object-overline">OBJECT / 001</span><strong>ARCHIT IN<br/>THREE DIMENSIONS</strong></div>
+     <div className="gravity-object-operation"><span className="gravity-object-interaction">DRAG TO TILT</span><button type="button" aria-pressed={paused} className="gravity-motion-toggle" onClick={()=>setPaused(v=>!v)}>{paused?'RESUME MOTION':'PAUSE MOTION'} <span aria-hidden="true">{paused?'▶':'Ⅱ'}</span></button></div>
     </div>
    </div>
   </div>
