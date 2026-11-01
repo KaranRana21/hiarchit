@@ -27,6 +27,18 @@ async function run(width){
    assert.match(await page.locator('h1').innerText(),/ARCHIT\s*JAIN/);
    assert.ok(await page.locator('img[alt*="Archit Jain"]').count()>=1);
   });
+  await test('Gravity Chamber hero',async()=>{
+   assert.equal(await page.locator('section.gravity-hero').count(),1);
+   assert.equal(await page.locator('.gravity-hero-title').count(),1);
+   assert.match(await page.locator('.gravity-hero-name').innerText(),/ARCHIT JAIN/);
+   assert.ok(await page.locator('.gravity-still-core').count()===1);
+  });
+  await test('readable sitewide microcopy',async()=>{
+   const typography=await page.locator('.section-heading-row .micro-label').first().evaluate(el=>{
+    const c=getComputedStyle(el);return {size:parseFloat(c.fontSize),weight:parseInt(c.fontWeight,10),font:c.fontFamily};
+   });
+   assert.ok(typography.size>=10 && typography.weight>=600,JSON.stringify(typography));
+  });
   await test('no horizontal overflow',async()=>{
    const d=await page.evaluate(()=>({document:document.documentElement.scrollWidth,body:document.body.scrollWidth,view:innerWidth}));
    assert.ok(Math.max(d.document,d.body)<=d.view+2,JSON.stringify(d));
@@ -62,6 +74,13 @@ async function run(width){
    });
   }
   if(width===1440){
+   await test('motion control',async()=>{
+    const toggle=page.locator('button.gravity-motion-toggle');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'),'true');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'),'false');
+   });
    await test('WebGL studio sculpture active',async()=>{
     await page.waitForTimeout(1900);
     const state=await page.evaluate(()=>({
