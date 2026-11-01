@@ -56,7 +56,6 @@ export function ArchitAvatar3D({paused=false}:{paused?:boolean}){
    neck.position.set(0,-.55,-.15);
    // Cutout portrait is a photo plane; perspective limited to a few degrees
    // to avoid pretending one source photo contains unobserved side geometry.
-   const photoCanvas=document.createElement('canvas');
    const photoTexture=new THREE.TextureLoader().load('/archit-portrait.svg');
    photoTexture.colorSpace=THREE.SRGBColorSpace;
    const portraitMat=new THREE.MeshBasicMaterial({map:photoTexture,transparent:true,side:THREE.DoubleSide,depthWrite:false});
