@@ -1,90 +1,134 @@
-import {chromium} from 'playwright';
+import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 
-const BASE=process.env.SMOKE_BASE_URL||'http://127.0.0.1:3000';
-const widths=[320,360,390,430,768,1024,1440,1920];
-const out='smoke-artifacts';await fs.mkdir(out,{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage','--enable-unsafe-swiftshader']});
-const fails=[];let checks=0;
-async function inspect(width){
- const context=await browser.newContext({viewport:{width,height:width<700?820:900},deviceScaleFactor:1,reducedMotion:width===320?'reduce':'no-preference'});
- const page=await context.newPage();
- const exceptions=[];
- page.on('pageerror',e=>exceptions.push(e.message));
- async function check(label,fn){
-  checks++;
-  try{await fn();console.log('PASS '+width+'px '+label);}
-  catch(e){fails.push(width+'px '+label+': '+e.message);console.error('FAIL '+width+'px '+label+': '+e.message);await page.screenshot({path:out+'/failure-'+width+'-'+label.replace(/[^a-z]+/gi,'-')+'.png'}).catch(()=>{});}
- }
+const origin = process.env.SMOKE_BASE_URL || 'http://127.0.0.1:3000';
+const widths = [320,360,390,430,768,1024,1440,1920];
+const dir = 'smoke-artifacts';
+await fs.mkdir(dir,{recursive:true});
+const browser = await chromium.launch({headless:true,args:['--disable-dev-shm-usage','--enable-unsafe-swiftshader']});
+let checks=0;const failures=[];
+async function run(width){
+ const mobile=width<=768;
+ const context=await browser.newContext({viewport:{width,height:mobile?820:900},deviceScaleFactor:1,
+   reducedMotion:width===360?'reduce':'no-preference'});
+ const page=await context.newPage();const errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ const test=async(label,fn)=>{checks++;try{await fn();console.log('PASS '+width+'px '+label)}
+   catch(e){failures.push(width+'px '+label+': '+e.message);console.log('FAIL '+width+'px '+label+': '+e.message);
+   await page.screenshot({path:dir+'/failure-'+width+'-'+label.replace(/[^a-z]/gi,'-')+'.png'}).catch(()=>{});}};
  try{
-  await page.goto(BASE,{waitUntil:'domcontentloaded',timeout:30000});
-  await page.locator('h1').first().waitFor({state:'visible',timeout:12000});
-  await page.waitForTimeout(500);
-  await check('Archit identity',async()=>{
+  await page.goto(origin,{waitUntil:'domcontentloaded',timeout:30000});
+  await page.locator('h1').waitFor({state:'visible',timeout:20000});
+  await page.waitForTimeout(1350);
+  await test('Archit identity',async()=>{
+   assert.equal(await page.locator('h1').count(),1);
    assert.match(await page.title(),/Archit Jain/);
-   assert.match(await page.locator('h1').innerText(),/ARCHIT/i);
-   assert.ok(await page.locator('.l-home-hero img').count()>0);
-   assert.equal(await page.locator('.l-work-list .l-feature-item').count(),5);
+   assert.match(await page.locator('h1').innerText(),/ARCHIT\s*JAIN/);
+   assert.ok(await page.locator('img[alt*="Archit Jain"]').count()>=1);
   });
-  await check('monochrome reference design',async()=>{
-   const c=await page.locator('body').evaluate(e=>getComputedStyle(e).backgroundColor);
-   assert.equal(c,'rgb(255, 255, 255)');
-   assert.equal(await page.locator('.l-manifesto').count(),1);
-   assert.equal(await page.locator('.l-extras-items > a').count(),7);
+  await test('Gravity Chamber hero',async()=>{
+   assert.equal(await page.locator('section.gravity-hero').count(),1);
+   assert.equal(await page.locator('.gravity-hero-title').count(),1);
+   assert.match(await page.locator('.gravity-hero-name').innerText(),/ARCHIT JAIN/);
+   assert.ok(await page.locator('.gravity-still-core').count()===1);
   });
-  await check('no horizontal overflow',async()=>{
-   const dims=await page.evaluate(()=>({view:innerWidth,doc:document.documentElement.scrollWidth,body:document.body.scrollWidth}));
-   assert.ok(Math.max(dims.doc,dims.body)<=dims.view+2,JSON.stringify(dims));
+  await test('hero display type not clipped',async()=>{
+   if(width>520)return;
+   await page.evaluate(()=>document.fonts.ready);
+   const geometry=await page.locator('.gravity-headline-line').evaluateAll(els=>els.map(el=>({
+     text:el.textContent?.trim(),available:el.clientWidth,needed:el.scrollWidth
+   })));
+   for(const g of geometry)assert.ok(g.needed<=g.available+3,JSON.stringify(g));
   });
-  await check('required links',async()=>{
+  await test('readable sitewide microcopy',async()=>{
+   const typography=await page.locator('.section-heading-row .micro-label').first().evaluate(el=>{
+    const c=getComputedStyle(el);return {size:parseFloat(c.fontSize),weight:parseInt(c.fontWeight,10),font:c.fontFamily};
+   });
+   assert.ok(typography.size>=10 && typography.weight>=600,JSON.stringify(typography));
+  });
+  await test('no horizontal overflow',async()=>{
+   const d=await page.evaluate(()=>({document:document.documentElement.scrollWidth,body:document.body.scrollWidth,view:innerWidth}));
+   assert.ok(Math.max(d.document,d.body)<=d.view+2,JSON.stringify(d));
+  });
+  await test('links intact',async()=>{
    assert.ok(await page.locator('a[href="/work"]').count()>0);
    assert.ok(await page.locator('a[href="/journal"]').count()>0);
    assert.ok(await page.locator('a[href*="drive.google.com"]').count()>0);
    assert.ok(await page.locator('a[href^="mailto:architjain808@gmail.com"]').count()>0);
   });
-  await check('portrait loads',async()=>{
-   await page.locator('.l-about-image img').scrollIntoViewIfNeeded();
-   await page.waitForFunction(()=>{const im=document.querySelector('.l-about-image img');return im?.complete;},null,{timeout:15000});
-   assert.ok(await page.locator('.l-about-image img').evaluate(e=>e.naturalWidth>0));
+  await test('sculpture fallback available',async()=>{
+   assert.equal(await page.locator('.artifact-fallback').count(),1);
+   assert.ok((await page.locator('.artifact-stage').boundingBox())?.width>80);
+   if(width===320)assert.equal(await page.locator('.artifact-webgl.webgl-live').count(),0);
   });
-  if(width<=768){
-   await check('menu opens and closes',async()=>{
-    await page.locator('header.l-header[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
-    const menu=page.locator('button.l-menu-button');
-    await menu.click();
-    await page.waitForFunction(()=>document.querySelector('button.l-menu-button')?.getAttribute('aria-expanded')==='true',null,{timeout:6000});
-    await page.locator('.l-menu-visible a[href="/work"]').waitFor({state:'visible'});
-    await page.locator('.l-menu-visible a[href="/work"]').click();
-    await page.waitForURL('**/work');
-    await page.waitForFunction(()=>document.querySelector('button.l-menu-button')?.getAttribute('aria-expanded')==='false',null,{timeout:6000});
-    assert.match((await page.locator('h1').innerText()).toLowerCase(),/selected/);
+  await test('project index',async()=>{
+   assert.equal(await page.locator('button.toc-item').count(),4);
+   await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
+   if(width===320){await page.locator('button.toc-item').nth(1).focus();await page.keyboard.press('Enter');}
+   else await page.locator('button.toc-item').nth(1).click();
+   await page.waitForFunction(() => document.querySelectorAll('button.toc-item')[1]?.getAttribute('aria-pressed') === 'true', null, {timeout:4000});
+   assert.match(await page.locator('.project-spotlight h3').innerText(),/ITPO Booking/);
+   await page.getByRole('button',{name:'Next project'}).click();
+   assert.match(await page.locator('.project-spotlight h3').innerText(),/Anuvachan/);
+  });
+  if(mobile){
+   await test('mobile navigation',async()=>{
+    const menu=page.locator('button.menu-toggle');assert.ok(await menu.isVisible());
+    await menu.click();assert.equal(await menu.getAttribute('aria-expanded'),'true');
+    await page.locator('nav.header-nav a[href="/work"]').click();
+    await page.waitForURL('**/work',{timeout:10000});
+    assert.equal(await menu.getAttribute('aria-expanded'),'false');
    });
   }
   if(width===1440){
-   await check('work route lists authentic projects',async()=>{
-    await page.goto(BASE+'/work');
-    assert.equal(await page.locator('article.l-case').count(),4);
-    assert.match(await page.locator('body').innerText(),/UMANG Web/);
+   await test('motion control',async()=>{
+    const toggle=page.locator('button.gravity-motion-toggle');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'),'true');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'),'false');
    });
-   await check('journal route contains real articles',async()=>{
-    await page.goto(BASE+'/journal');
-    assert.equal(await page.locator('a.l-article-row').count(),6);
+   await test('WebGL studio sculpture active',async()=>{
+    await page.waitForTimeout(1900);
+    const state=await page.evaluate(()=>({
+      capable:!!document.createElement('canvas').getContext('webgl2'),
+      live:!!document.querySelector('.artifact-webgl.webgl-live')
+    }));
+    console.log('SCULPTURE STATE '+JSON.stringify(state));
+    if(state.capable)assert.equal(state.live,true,'WebGL supported but scene not active');
    });
-   await check('404 route',async()=>{const r=await page.goto(BASE+'/missing-smoke-page');assert.equal(r?.status(),404);});
+   await test('Archit portrait load',async()=>{
+    await page.locator('img[alt*="Archit Jain"]').first().scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>{const i=document.querySelector('img[alt*="Archit Jain"]');return i?.complete;},null,{timeout:8000});
+    assert.ok(await page.locator('img[alt*="Archit Jain"]').first().evaluate(img=>img.naturalWidth>0));
+   });
+   await test('full work route',async()=>{
+    await page.goto(origin+'/work');assert.equal(await page.locator('article.case').count(),4);
+   });
+   await test('journal articles',async()=>{
+    await page.goto(origin+'/journal');assert.equal(await page.locator('a.article-row').count(),6);
+   });
+   await test('404 handling',async()=>{
+    const response=await page.goto(origin+'/missing-qa-url');assert.equal(response.status(),404);
+   });
   }
-  await check('runtime exceptions',async()=>assert.deepEqual(exceptions,[]));
+  await test('no runtime exception',async()=>assert.deepEqual(errors,[]));
   if([390,1440].includes(width)){
-   await page.goto(BASE,{waitUntil:'domcontentloaded'});
-   await page.waitForTimeout(1000);
+   await page.goto(origin,{waitUntil:'domcontentloaded'});
+   await page.waitForTimeout(2300);
    await page.evaluate(async()=>{
-    for(let y=0;y<document.body.scrollHeight;y+=Math.floor(innerHeight*.82)){scrollTo(0,y);await new Promise(r=>setTimeout(r,65))}
+    for(let y=0;y<document.body.scrollHeight;y+=680){
+     window.scrollTo(0,y);await new Promise(resolve=>setTimeout(resolve,110));
+    }
     scrollTo(0,0);
    });
-   await page.waitForTimeout(600);
-   await page.screenshot({path:out+'/locomotive-archit-'+width+'.png',fullPage:true});
+   await page.waitForTimeout(900);
+   await page.screenshot({path:dir+'/future-form-'+width+'.png',fullPage:true});
   }
  }finally{await context.close()}
 }
-try{for(const w of widths)await inspect(w);console.log('SMOKE RESULT: '+(checks-fails.length)+'/'+checks+' passed');if(fails.length){console.error('FAILURES:\n'+fails.join('\n'));process.exitCode=1;}}
-finally{await browser.close()}
+try{for(const w of widths)await run(w);
+console.log('SMOKE RESULT: '+(checks-failures.length)+'/'+checks+' passed');
+if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
+}finally{await browser.close()}

@@ -1,10 +1,4 @@
 import Link from 'next/link';
-import {LocoHeader,LocoFooter} from '@/components/LocomotiveChrome';
+import {Header,Footer} from '@/components/Chrome';
 import {articles,originalArticleUrl} from '@/lib/content';
-export function JournalPage(){return <><LocoHeader/><main className="l-inner-page">
- <section className="l-inner l-inner-hero"><div className="l-inner-kicker"><span>ARCHIT JAIN / IDEAS IN PROGRESS</span><span>WRITING / 2026</span></div><h1 className="l-inner-title">Field<br/><em>notes.</em></h1><p className="l-inner-intro">Thinking aloud about frontend systems, design, AI tools, and everything changing how we build for the web.</p></section>
- <section className="l-inner l-journal-list">{articles.map((a,i)=><a key={a.slug} className="l-article-row" href={originalArticleUrl(a.slug)} target="_blank" rel="noopener noreferrer">
-  <span className="l-n">0{i+1}</span><div><h2>{a.title}</h2><p>{a.summary} <span>— {a.tags.join(' / ')} · {a.mins}</span></p></div><time>{a.date}</time><span className="l-arr">↗</span>
- </a>)}</section>
- <div className="l-inner l-mini-footer"><Link href="/" className="l-arrow-button">BACK TO HOME <span>↗</span></Link></div>
- </main><LocoFooter/></>}
+export function JournalPage(){return <><Header/><main className="inner-page"><section className="inner-hero shell journal-hero"><div className="eyebrow mono"><span className="tag-dot"/> ARCHIT&apos;S NOTES / 2026</div><h1>FIELD<br/><em>NOTES.</em></h1><div className="inner-hero-foot"><p>A running log of discoveries across frontend systems, design and emerging developer tools.</p><span className="mono">06 PUBLICATIONS ↓</span></div></section><section className="journal-index shell"><p className="mono journal-subheader">ALL ARTICLES <span>—</span> OPEN ORIGINAL PUBLISHED VERSIONS</p>{articles.map((a,i)=><a key={a.slug} className="article-row" href={originalArticleUrl(a.slug)} target="_blank" rel="noreferrer"><span className="article-index mono">0{i+1}</span><div><div className="article-tags mono">{a.tags.join(' / ')} <span>—</span> {a.mins}</div><h2>{a.title}</h2><p>{a.summary}</p></div><div className="article-right"><span className="mono">{a.date}</span><span className="article-up">↗</span></div></a>)}</section><div className="journal-bottom shell"><span className="mono">MORE IDEAS IN PROGRESS.</span><Link href="/">BACK TO HOME ↗</Link></div></main><Footer/></>}
