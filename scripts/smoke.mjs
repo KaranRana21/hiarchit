@@ -20,7 +20,18 @@ async function run(width){
  try{
   await page.goto(origin,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('h1').waitFor({state:'visible',timeout:20000});
-  await page.waitForTimeout(1350);
+  await test('premium intro loader',async()=>{
+   const intro=page.locator('[data-testid="site-loader"]');
+   if(width===1440){
+    await intro.waitFor({state:'visible',timeout:6000});
+    assert.equal(await intro.locator('.intro-loader__word').count(),2);
+    assert.match(await intro.locator('.intro-loader__word').first().innerText(),/ARCHIT/);
+    assert.equal(await intro.locator('button.intro-loader__skip').count(),1);
+    await intro.locator('button.intro-loader__skip').click();
+   }
+   await intro.waitFor({state:'detached',timeout:6500});
+   assert.notEqual(await page.locator('body').evaluate(e=>getComputedStyle(e).overflow),'hidden');
+  });
   await test('Archit identity',async()=>{
    assert.equal(await page.locator('h1').count(),1);
    assert.match(await page.title(),/Archit Jain/);
@@ -111,6 +122,12 @@ async function run(width){
    });
    await test('404 handling',async()=>{
     const response=await page.goto(origin+'/missing-qa-url');assert.equal(response.status(),404);
+   });
+  }
+  if(width===1440){
+   await test('intro stays dismissed after reload',async()=>{
+    await page.goto(origin,{waitUntil:'domcontentloaded'});
+    await page.locator('[data-testid="site-loader"]').waitFor({state:'detached',timeout:2500});
    });
   }
   await test('no runtime exception',async()=>assert.deepEqual(errors,[]));
