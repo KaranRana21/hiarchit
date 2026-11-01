@@ -1,6 +1,8 @@
 import type {Metadata,Viewport} from 'next';
 import './globals.css';
 import './gravity-reimagined.css';
+import './site-loader.css';
+import {SiteLoader} from '@/components/SiteLoader';
 export const metadata:Metadata={
   metadataBase:new URL('https://hiarchit-artful-karan-ranas-projects-87a15f72.vercel.app'),
   title:{default:'Archit Jain — Frontend Engineer',template:'%s — Archit Jain'},
@@ -10,4 +12,4 @@ export const metadata:Metadata={
   other:{'theme-color':'#101214'},
 };
 export const viewport:Viewport={width:'device-width',initialScale:1,themeColor:'#101214'};
-export default function Layout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
+export default function Layout({children}:{children:React.ReactNode}){return <html lang="en"><body><SiteLoader/>{children}</body></html>}
