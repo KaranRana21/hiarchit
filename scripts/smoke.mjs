@@ -50,14 +50,15 @@ async function inspect(width){
   });
   if(width<=768){
    await check('menu opens and closes',async()=>{
+    await page.locator('header.l-header[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
     const menu=page.locator('button.l-menu-button');
     await menu.click();
-    assert.equal(await menu.getAttribute('aria-expanded'),'true');
-    assert.equal(await page.locator('.l-menu-visible').count(),1);
+    await page.waitForFunction(()=>document.querySelector('button.l-menu-button')?.getAttribute('aria-expanded')==='true',null,{timeout:6000});
+    await page.locator('.l-menu-visible a[href="/work"]').waitFor({state:'visible'});
     await page.locator('.l-menu-visible a[href="/work"]').click();
     await page.waitForURL('**/work');
-    assert.equal(await menu.getAttribute('aria-expanded'),'false');
-    assert.equal(await page.locator('h1').innerText().then(x=>x.includes('Selected')),true);
+    await page.waitForFunction(()=>document.querySelector('button.l-menu-button')?.getAttribute('aria-expanded')==='false',null,{timeout:6000});
+    assert.match((await page.locator('h1').innerText()).toLowerCase(),/selected/);
    });
   }
   if(width===1440){
