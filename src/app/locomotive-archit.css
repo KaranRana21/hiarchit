@@ -246,8 +246,8 @@ h1,h2,h3,p{margin:0}h1,h2,h3{font-family:var(--l-font)}.l-inner{width:100%;paddi
  .l-summary{padding-top:90px;padding-bottom:115px}
  .l-summary-overline{font-size:10px}
  .l-summary-stage{display:flex;flex-direction:column;align-items:stretch;min-height:0}
- .l-summary-headlines{font-size:12.5vw;margin-top:90px}
- .l-summary-headlines span:nth-child(2){margin-left:7%}.l-summary-headlines span:nth-child(3){margin-left:15%}
+ .l-summary-headlines{font-size:clamp(29px,9.6vw,53px);margin-top:90px;max-width:100%}
+ .l-summary-headlines span:nth-child(2){margin-left:7%}.l-summary-headlines span:nth-child(3){margin-left:4%}
  .l-summary-ring{height:370px;min-height:0;width:100%}
  .l-summary-caption{flex-direction:column;align-items:flex-start;gap:20px}
  .l-summary-caption p{font-size:22px}.l-arrow-button{min-height:52px;font-size:11px}
@@ -300,3 +300,7 @@ h1,h2,h3,p{margin:0}h1,h2,h3{font-family:var(--l-font)}.l-inner{width:100%;paddi
 }
 @media(max-width:365px){.l-feature-name{font-size:8.1vw}.l-hero-text h1{font-size:18vw}.l-hero-subline{font-size:8.1vw}.l-feature-mobile-label{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* Finishing passes: keep contextual hero information outside fixed navigation. */
+.l-hero-eyebrow{position:absolute;top:114px;left:var(--l-gutter);right:var(--l-gutter)}
+@media(max-width:600px){.l-hero-eyebrow{top:84px;left:var(--l-gutter);right:var(--l-gutter)}}
