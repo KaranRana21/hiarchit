@@ -1,2 +1,2 @@
-import {Home} from '@/components/Home';
-export default function Page(){return <Home/>}
+import {LocomotiveHome} from '@/components/LocomotiveHome';
+export default function Page(){return <LocomotiveHome/>}
