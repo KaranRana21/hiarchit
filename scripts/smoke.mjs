@@ -33,6 +33,14 @@ async function run(width){
    assert.match(await page.locator('.gravity-hero-name').innerText(),/ARCHIT JAIN/);
    assert.ok(await page.locator('.gravity-still-core').count()===1);
   });
+  await test('hero display type not clipped',async()=>{
+   if(width>520)return;
+   await page.evaluate(()=>document.fonts.ready);
+   const geometry=await page.locator('.gravity-headline-line').evaluateAll(els=>els.map(el=>({
+     text:el.textContent?.trim(),available:el.clientWidth,needed:el.scrollWidth
+   })));
+   for(const g of geometry)assert.ok(g.needed<=g.available+3,JSON.stringify(g));
+  });
   await test('readable sitewide microcopy',async()=>{
    const typography=await page.locator('.section-heading-row .micro-label').first().evaluate(el=>{
     const c=getComputedStyle(el);return {size:parseFloat(c.fontSize),weight:parseInt(c.fontWeight,10),font:c.fontFamily};
