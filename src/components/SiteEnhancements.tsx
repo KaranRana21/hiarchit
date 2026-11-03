@@ -50,7 +50,9 @@ export function SiteEnhancements(){
     '.journal-feature-head > h2','.journal-entry','.closing-preface',
     '.closing-cta','.closing-details',
     '.inner-hero h1','.inner-hero-foot','.case-art','.case-copy',
-    '.article-row','.work-foot h2','[data-motion]'
+    '.article-row','.work-foot h2','[data-motion]',
+    '.closing-top','.portrait-actions','.discipline-header','.trajectory-layout',
+    '.exhibition-end','.section-heading-row','.case-data','.tags'
    ];
    const elements=Array.from(document.querySelectorAll<HTMLElement>(selectors.join(',')));
    observer=new IntersectionObserver(entries=>{
@@ -61,14 +63,16 @@ export function SiteEnhancements(){
      if(el.getBoundingClientRect().top<innerHeight*.16)continue;
      const siblings=Array.from(el.parentElement?.children||[]);
      const index=Math.max(0,siblings.indexOf(el));
-     const delay=(index%5)*65;
+     const delay=Math.min(260,(index%5)*70);
      const isHeading=/^H[1-6]$/.test(el.tagName);
-     const translate=isHeading?35:24;
-     // Preserve accessible content on first paint; animate only once in view.
+     const threeD=el.matches('.portrait-frame,.exhibition-shell,.case-art,.experience-graphic');
+     const translate=isHeading?46:threeD?26:25;
+     // Never start hidden: SSR content readable before hydration and on failed JS.
+     // Staggered WAAPI compositor animation: no React rerenders or GSAP bundle on mobile.
      const a=el.animate([
-      {opacity:.68,transform:`translate3d(0,${translate}px,0) rotateX(${isHeading?3:1}deg)`},
-      {opacity:1,transform:'translate3d(0,0,0) rotateX(0deg)'}
-     ],{duration:isHeading?880:760,delay,easing:'cubic-bezier(.19,1,.22,1)',fill:'both'});
+      {opacity:.54,transform:`translate3d(0,${translate}px,0) rotateX(${threeD?5:isHeading?3:0}deg) scale(${threeD?.965:1})`},
+      {opacity:1,transform:'translate3d(0,0,0) rotateX(0deg) scale(1)'}
+     ],{duration:threeD?1080:isHeading?980:820,delay,easing:'cubic-bezier(.16,1,.3,1)',fill:'both'});
      a.onfinish=()=>a.cancel();
      animations.push(a);
     }
@@ -105,6 +109,32 @@ export function SiteEnhancements(){
     tiltCleanup.push(()=>{el.removeEventListener('pointerenter',enter);el.removeEventListener('pointermove',move);el.removeEventListener('pointerleave',leave);leave();});
    });
   }
+
+  // Magnetic CTAs: RAF CSS transforms only, never layout properties.
+  const magneticCleanup:Array<()=>void>=[];
+  if(fine&&!reduced&&!saveData){
+   document.querySelectorAll<HTMLElement>('.gravity-primary-action,.header-cta,.outline-link,.black-pill,.dark-pill,.closing-arrow').forEach(el=>{
+    let rect:DOMRect|null=null,frame=0,dx=0,dy=0;
+    const enter=()=>{rect=el.getBoundingClientRect();el.classList.add('fx-magnetic-active')};
+    const move=(e:PointerEvent)=>{
+     if(!rect)rect=el.getBoundingClientRect();
+     dx=(e.clientX-(rect.left+rect.width/2))/rect.width;
+     dy=(e.clientY-(rect.top+rect.height/2))/rect.height;
+     if(frame)return;
+     frame=requestAnimationFrame(()=>{frame=0;el.style.setProperty('--fx-mx',`${(dx*9).toFixed(2)}px`);el.style.setProperty('--fx-my',`${(dy*7).toFixed(2)}px`)});
+    };
+    const leave=()=>{if(frame)cancelAnimationFrame(frame);frame=0;rect=null;el.style.removeProperty('--fx-mx');el.style.removeProperty('--fx-my');el.classList.remove('fx-magnetic-active')};
+    el.addEventListener('pointerenter',enter);el.addEventListener('pointermove',move,{passive:true});el.addEventListener('pointerleave',leave);
+    magneticCleanup.push(()=>{el.removeEventListener('pointerenter',enter);el.removeEventListener('pointermove',move);el.removeEventListener('pointerleave',leave);leave()});
+   });
+  }
+
+  // Exhibition art holds still outside viewport. Only active, visible chapter gets idle motion.
+  const artTargets=document.querySelectorAll<HTMLElement>('.exhibition,.trajectory,.portrait-section');
+  const artObserver=('IntersectionObserver' in window)?new IntersectionObserver(entries=>{
+   for(const entry of entries)entry.target.classList.toggle('fx-chapter-live',entry.isIntersecting);
+  },{threshold:.06}):null;
+  artTargets.forEach(el=>artObserver?.observe(el));
 
   // Minimal cursor follower, active only for desktop fine-pointer users.
   let cursorFrame=0;
@@ -152,7 +182,8 @@ export function SiteEnhancements(){
    window.removeEventListener('resize',updateScroll);
    if(scrollFrame)cancelAnimationFrame(scrollFrame);
    observer?.disconnect();animations.forEach(a=>a.cancel());
-   tiltCleanup.forEach(fn=>fn());teardownCursor();
+   tiltCleanup.forEach(fn=>fn());magneticCleanup.forEach(fn=>fn());artObserver?.disconnect();
+   artTargets.forEach(el=>el.classList.remove('fx-chapter-live'));teardownCursor();
   };
  },[pathname]);
 
