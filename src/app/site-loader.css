@@ -9,7 +9,7 @@
  padding:clamp(24px,3.3vw,55px);
  color:#e8eee9;background:transparent;overflow:hidden;
  font-family:var(--body),'Arial',sans-serif;
- animation:ap-failsafe 0s linear 3.8s forwards;
+ animation:ap-failsafe 0s linear 4.5s forwards;
 }
 .aperture-loader__panel{
  position:absolute;z-index:-2;top:0;bottom:0;width:calc(50% + 1px);
@@ -82,14 +82,14 @@
  position:absolute;top:50%;left:50%;
  border-radius:50%;
  box-shadow:0 0 0 1px #dfe5df10,inset 5px 6px 24px #090e12a6,16px 17px 35px #0206085c;
- backface-visibility:visible;
+ backface-visibility:hidden;will-change:transform,opacity;
 }
 .aperture-loader__ring--outer{
  width:78%;height:78%;border:clamp(9px,1.2vw,17px) solid transparent;
  background:linear-gradient(#1c3037,#0c131a) padding-box,
  conic-gradient(from 218deg,#28363c,#f4fff9 14%,#52686e 30%,#c5d5cc 45%,#253d45 62%,#f4e8d9 77%,#455e65 92%,#28363c) border-box;
  transform:translate(-50%,-50%) rotate(-26deg) rotateX(22deg);
- animation:ap-outer-enter 1.12s cubic-bezier(.2,.85,.16,1) both;
+ animation:ap-outer-enter 1.35s cubic-bezier(.22,.72,.18,1) both;
 }
 .aperture-loader__ring--oblique{
  width:86%;height:86%;border:clamp(2px,.32vw,4px) solid transparent;
@@ -97,13 +97,13 @@
  conic-gradient(from 80deg,#effff5,#516971,#f7ecd9,#22333a,#d6f4e4) border-box;
  transform:translate(-50%,-50%) rotate(-40deg) rotateX(68deg);
  box-shadow:8px 19px 35px #01080b80,0 0 60px #91c6ae1c;
- animation:ap-oblique-enter 1.22s cubic-bezier(.16,1,.26,1) both;
+ animation:ap-oblique-enter 1.39s cubic-bezier(.22,.72,.18,1) both;
 }
 .aperture-loader__ring--fine{
  width:94%;height:94%;border:1px solid #c4e8d05c;
  transform:translate(-50%,-50%) rotate(19deg) rotateY(64deg);
  box-shadow:0 0 40px #b1dfcb13;
- animation:ap-fine-enter 1.3s cubic-bezier(.16,1,.26,1) both;
+ animation:ap-fine-enter 1.41s cubic-bezier(.22,.72,.18,1) both;
 }
 .aperture-loader__core{
  position:absolute;left:50%;top:50%;width:37%;aspect-ratio:1;
@@ -115,7 +115,7 @@
  box-shadow:inset -17px -20px 35px #101e29b8,inset 11px 13px 32px #fbfff987,
  0 0 0 8px #0a18201c,0 28px 65px #01090fb8,0 0 115px #aadbc82c;
  display:grid;place-items:center;overflow:hidden;
- animation:ap-core-enter .9s cubic-bezier(.15,1,.3,1) both;
+ animation:ap-core-enter 1.3s cubic-bezier(.22,.76,.18,1) both;will-change:transform,opacity;
 }
 .aperture-loader__core:before{content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid #e9f6e955}
 .aperture-loader__core-light{
@@ -123,7 +123,7 @@
  background:linear-gradient(90deg,transparent,#fff8,transparent);
  transform:rotate(27deg) translateX(-15%);
  filter:blur(7px);opacity:.38;
- animation:ap-light 1.15s cubic-bezier(.2,1,.25,1) both;
+ animation:ap-light 1.42s cubic-bezier(.22,.7,.18,1) both;
 }
 .aperture-loader__core-glyph{
  font:750 clamp(33px,6.1vw,82px)/.95 var(--display),'Arial Black',sans-serif;
@@ -151,7 +151,7 @@
 .aperture-loader__foot-title strong{font:750 clamp(12px,1.15vw,16px)/1.2 var(--body),sans-serif;letter-spacing:-.015em}
 .aperture-loader__foot-title span{font:600 10px/1.3 var(--mono),monospace;color:#91a7a0}
 .aperture-loader__timeline{height:2px;margin-bottom:8px;background:#8ca79a48;overflow:hidden}
-.aperture-loader__timeline span{display:block;width:100%;height:100%;background:#e4f4e5;transform:scaleX(0);transform-origin:left center;animation:ap-timeline 1.32s linear both}
+.aperture-loader__timeline span{display:block;width:100%;height:100%;background:#e4f4e5;transform:scaleX(0);transform-origin:left center;animation:ap-timeline 1.43s cubic-bezier(.22,.65,.3,1) both}
 .aperture-loader__skip{
  justify-self:end;white-space:nowrap;
  font:750 11px/1.2 var(--body),sans-serif;letter-spacing:.025em;
@@ -164,32 +164,34 @@
 .aperture-loader__skip span{font-size:17px;transition:transform .18s ease}
 .aperture-loader__skip:hover span{transform:translate(3px,-3px)}
 .aperture-loader__skip:focus-visible{outline:2px solid #e7fff3;outline-offset:4px}
-@keyframes ap-outer-enter{from{opacity:.25;transform:translate(-50%,-50%) rotate(-80deg) rotateX(43deg) scale(.76)}to{opacity:1;transform:translate(-50%,-50%) rotate(-26deg) rotateX(22deg) scale(1)}}
-@keyframes ap-oblique-enter{from{opacity:0;transform:translate(-50%,-50%) rotate(28deg) rotateX(84deg) scale(.76)}to{opacity:1;transform:translate(-50%,-50%) rotate(-40deg) rotateX(68deg) scale(1)}}
-@keyframes ap-fine-enter{from{opacity:0;transform:translate(-50%,-50%) rotate(-55deg) rotateY(81deg) scale(.75)}to{opacity:1;transform:translate(-50%,-50%) rotate(19deg) rotateY(64deg) scale(1)}}
-@keyframes ap-core-enter{from{opacity:.1;transform:translate(-50%,-50%) scale(.68)}to{opacity:1;transform:translate(-50%,-50%) scale(.94)}}
+@keyframes ap-outer-enter{0%{opacity:.3;transform:translate(-50%,-50%) rotate(-48deg) rotateX(27deg) scale(.86)}72%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) rotate(-26deg) rotateX(22deg) scale(1)}}
+@keyframes ap-oblique-enter{0%{opacity:.1;transform:translate(-50%,-50%) rotate(-19deg) rotateX(74deg) scale(.88)}75%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) rotate(-40deg) rotateX(68deg) scale(1)}}
+@keyframes ap-fine-enter{0%{opacity:.15;transform:translate(-50%,-50%) rotate(-9deg) rotateY(73deg) scale(.9)}80%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) rotate(19deg) rotateY(64deg) scale(1)}}
+@keyframes ap-core-enter{0%{opacity:.3;transform:translate(-50%,-50%) scale(.83)}75%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) scale(.94)}}
 @keyframes ap-light{from{transform:rotate(27deg) translateX(-105%)}to{transform:rotate(27deg) translateX(105%)}}
 @keyframes ap-timeline{to{transform:scaleX(1)}}
 @keyframes ap-failsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
 /* Exit motion: iris energy resolves, then two architectural doors retract. */
-.aperture-loader--out{pointer-events:none}
+.aperture-loader--out{pointer-events:none;animation:ap-complete .86s ease-in-out forwards;}
 .aperture-loader--out .aperture-loader__panel--left{
- animation:ap-door-left .61s cubic-bezier(.77,0,.175,1) both;
+ animation:ap-door-left .86s cubic-bezier(.64,0,.22,1) both;
 }
 .aperture-loader--out .aperture-loader__panel--right{
- animation:ap-door-right .61s cubic-bezier(.77,0,.175,1) both;
+ animation:ap-door-right .86s cubic-bezier(.64,0,.22,1) both;
 }
 .aperture-loader--out .aperture-loader__grid,
 .aperture-loader--out .aperture-loader__top,
 .aperture-loader--out .aperture-loader__foot,
 .aperture-loader--out .aperture-loader__left-caption,
-.aperture-loader--out .aperture-loader__right-caption{opacity:0;transition:opacity .18s ease}
+.aperture-loader--out .aperture-loader__right-caption{opacity:0;transition:opacity .34s cubic-bezier(.36,0,.15,1)}
 .aperture-loader--out .aperture-loader__machine{
- animation:ap-machine-exit .51s cubic-bezier(.4,0,.85,.3) both;
+ animation:ap-machine-exit .81s cubic-bezier(.36,0,.17,1) both;will-change:transform,opacity;
 }
-@keyframes ap-door-left{0%{transform:translateX(0)}22%{transform:translateX(0)}100%{transform:translateX(-102%)}}
-@keyframes ap-door-right{0%{transform:translateX(0)}22%{transform:translateX(0)}100%{transform:translateX(102%)}}
-@keyframes ap-machine-exit{0%{opacity:1;transform:scale(1)}60%{opacity:.45;transform:scale(1.07)}100%{opacity:0;transform:scale(1.24)}}
+@keyframes ap-door-left{0%{transform:translate3d(0,0,0)}12%{transform:translate3d(0,0,0)}100%{transform:translate3d(-104%,0,0)}}
+@keyframes ap-door-right{0%{transform:translate3d(0,0,0)}12%{transform:translate3d(0,0,0)}100%{transform:translate3d(104%,0,0)}}
+@keyframes ap-machine-exit{0%{opacity:1;transform:translate3d(0,0,0) scale(1)}28%{opacity:1;transform:translate3d(0,0,0) scale(1.015)}100%{opacity:0;transform:translate3d(0,0,0) scale(1.09)}}
+@keyframes ap-complete{0%,55%{opacity:1}100%{opacity:0}}
+
 @media(max-width:920px){
  .aperture-loader__composition{grid-template-columns:1fr minmax(260px,65vw) 1fr}
  .aperture-loader__left-caption,.aperture-loader__right-caption{font-size:11px}
