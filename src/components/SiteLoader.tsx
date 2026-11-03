@@ -6,10 +6,11 @@ import {useCallback,useEffect,useRef,useState} from 'react';
  * APERTURE / AJ — deliberate first-visit visual ceremony, not download progress.
  * One short sequence per session; skips on reduced motion, Save-Data and repeat visits.
  * Hero remains rendered underneath. No body scroll locks or JS-dependent blank screen.
+ * Sequence: 1.43s instrument settle + 860ms coordinated split-panel handoff.
  */
 const KEY='archit-aperture-intro-v2';
-const INTRO_MS=1320;
-const EXIT_MS=610;
+const INTRO_MS=1430;
+const EXIT_MS=860;
 
 export function SiteLoader(){
  const [phase,setPhase]=useState<'enter'|'exit'|'done'>('enter');
@@ -36,7 +37,7 @@ export function SiteLoader(){
   }
   const intro=window.setTimeout(()=>finish(),INTRO_MS);
   // Failsafe independent of decorative CSS.
-  const hardStop=window.setTimeout(()=>{if(!closed.current)finish(true)},3200);
+  const hardStop=window.setTimeout(()=>{if(!closed.current)finish(true)},3800);
   return()=>{window.clearTimeout(intro);window.clearTimeout(hardStop)};
  },[finish]);
 
