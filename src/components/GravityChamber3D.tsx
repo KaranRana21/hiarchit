@@ -153,8 +153,8 @@ export function GravityChamber3D({paused=false}:{paused?:boolean}){
    const id=window.requestIdleCallback(initialize,{timeout:3200});
    cancelIdle=()=>window.cancelIdleCallback(id);
   }else{
-   const timer=window.setTimeout(initialize,1300);
-   cancelIdle=()=>window.clearTimeout(timer);
+   const timer=setTimeout(initialize,1300);
+   cancelIdle=()=>clearTimeout(timer);
   }
   return()=>{disposed=true;cancelIdle();cleanup()};
  },[]);
