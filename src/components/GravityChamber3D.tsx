@@ -14,14 +14,14 @@ export function GravityChamber3D({paused=false}:{paused?:boolean}){
    ||(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData)return;
   let disposed=false;
   let cleanup=()=>{};
-  (async()=>{
+  const initialize=()=>{(async()=>{
    const THREE=await import('three');
    const {RoomEnvironment}=await import('three/addons/environments/RoomEnvironment.js');
    if(disposed)return;
    let renderer:import('three').WebGLRenderer;
    try{renderer=new THREE.WebGLRenderer({canvas:el,alpha:true,antialias:true,powerPreference:'high-performance'});}
    catch{return;}
-   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.45));
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.3));
    renderer.setClearColor(0x000000,0);
    renderer.outputColorSpace=THREE.SRGBColorSpace;
    renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -146,8 +146,17 @@ export function GravityChamber3D({paused=false}:{paused?:boolean}){
     el.removeEventListener('pointercancel',up);el.removeEventListener('lostpointercapture',up);
     tracked.forEach(x=>x.dispose());environment.texture.dispose();pmrem.dispose();room.dispose();renderer.dispose();
    };
-  })().catch(()=>{});
-  return()=>{disposed=true;cleanup()};
+  })().catch(()=>{});};
+  // Keep static authored 3D visible immediately. Initialize heavy renderer on idle.
+  let cancelIdle=()=>{};
+  if('requestIdleCallback' in window){
+   const id=window.requestIdleCallback(initialize,{timeout:3200});
+   cancelIdle=()=>window.cancelIdleCallback(id);
+  }else{
+   const timer=window.setTimeout(initialize,1300);
+   cancelIdle=()=>window.clearTimeout(timer);
+  }
+  return()=>{disposed=true;cancelIdle();cleanup()};
  },[]);
  return <div className="artifact-stage gravity-scene" aria-label="Interactive floating glass optical core inside asymmetric polished titanium orbital frames" role="img">
   <div className="artifact-fallback gravity-still" aria-hidden="true">
