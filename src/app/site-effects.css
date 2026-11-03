@@ -92,3 +92,56 @@ html.fx-cursor-label .fx-cursor-dot{opacity:0}
  .stage-layer.layer-active .language-script,
  .experience-halo,.experience-graphic>span{animation:none!important}
 }
+
+/* Artful v4 — cinematic chapter motion. Pure GPU compositing, no new assets or JS bundles. */
+@media(min-width:901px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .fx-magnetic-active{transform:translate3d(var(--fx-mx,0px),var(--fx-my,0px),0)!important;transition:transform .15s cubic-bezier(.2,.8,.2,1)!important;will-change:transform}
+ .statement-frame{perspective:1100px}
+ .statement-frame>p{transform-style:preserve-3d}
+ .statement-frame::after{
+   content:"";position:absolute;right:5%;top:16%;width:clamp(75px,10vw,165px);aspect-ratio:1;
+   border-radius:50%;border:1px solid #b2dfd047;
+   box-shadow:inset 12px 15px 22px #a1d3c50b,15px 18px 35px #0004;
+   transform:perspective(550px) rotateX(68deg) rotateZ(-20deg);
+   pointer-events:none;opacity:.6;
+ }
+ .portrait-frame{isolation:isolate;transform-style:preserve-3d}
+ .portrait-frame::after{
+   content:"";position:absolute;inset:4%;z-index:4;pointer-events:none;
+   border:1px solid #d1e8d335;background:linear-gradient(118deg,transparent 27%,#edfff20b 47%,transparent 66%);
+   transform:translateZ(34px);
+ }
+ .portrait-section.fx-chapter-live .portrait-stamp{animation:fx-stamp-breathe 9s ease-in-out infinite}
+ .trajectory.fx-chapter-live .experience-halo{animation:fx-signal-orbit 13s ease-in-out infinite}
+ .trajectory.fx-chapter-live .experience-graphic>span{animation:fx-signal-float 7.5s ease-in-out infinite}
+ .exhibition.fx-chapter-live .stage-layer.layer-active .civic-globe{animation:fx-orbital-drift 8.4s ease-in-out infinite}
+ .exhibition.fx-chapter-live .stage-layer.layer-active .building-object{animation:fx-tower-drift 9.5s ease-in-out infinite}
+ .exhibition.fx-chapter-live .stage-layer.layer-active .ai-crystal{animation:fx-ai-drift 9s ease-in-out infinite}
+ .exhibition.fx-chapter-live .stage-layer.layer-active .language-script{animation:fx-language-drift 8s ease-in-out infinite}
+ .exhibition.fx-chapter-live .stage-layer.layer-active .concept-art{transform-style:preserve-3d}
+ .rail-stat{transform-style:preserve-3d;perspective:900px}
+ .rail-stat strong{transition:transform .7s cubic-bezier(.16,1,.3,1)}
+ .rail-stat:hover strong{transform:translate3d(0,-6px,24px)}
+ .discipline-line:hover .discipline-symbol{transform:rotate(45deg) translate3d(-2px,-2px,0)}
+ .discipline-symbol{transition:transform .55s cubic-bezier(.16,1,.3,1)}
+ .journal-entry:hover .journal-entry-arrow{transform:translate3d(4px,-4px,0)}
+ .journal-entry-arrow{transition:transform .35s cubic-bezier(.16,1,.3,1)}
+}
+@keyframes fx-stamp-breathe{
+ 0%,100%{transform:translate3d(0,0,0) rotate(-14deg)}
+ 50%{transform:translate3d(0,-7px,0) rotate(-6deg)}
+}
+/* Gate decorative motion globally when chapter offscreen; preserves layout. */
+@media(min-width:901px) and (hover:hover) and (pointer:fine){
+ .exhibition:not(.fx-chapter-live) .stage-layer.layer-active .civic-globe,
+ .exhibition:not(.fx-chapter-live) .stage-layer.layer-active .building-object,
+ .exhibition:not(.fx-chapter-live) .stage-layer.layer-active .ai-crystal,
+ .exhibition:not(.fx-chapter-live) .stage-layer.layer-active .language-script,
+ .trajectory:not(.fx-chapter-live) .experience-halo,
+ .trajectory:not(.fx-chapter-live) .experience-graphic>span{animation-play-state:paused}
+}
+@media(prefers-reduced-motion:reduce){
+ .fx-magnetic-active{transform:none!important}
+ .portrait-frame::after,.statement-frame::after{display:none!important}
+ .portrait-stamp{animation:none!important}
+}
