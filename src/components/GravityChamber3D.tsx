@@ -155,6 +155,6 @@ export function GravityChamber3D({paused=false}:{paused?:boolean}){
    <div className="gravity-still-core"><div className="gravity-still-facet"/></div>
    <div className="gravity-still-speck s-one"/><div className="gravity-still-speck s-two"/>
   </div>
-  <canvas ref={canvas} className={'artifact-webgl gravity-canvas '+(active?'webgl-live':'')} aria-hidden="true"/>
+  <canvas ref={canvas} className={'artifact-webgl gravity-canvas '+(active?'webgl-live':'')} data-cursor="drag" aria-hidden="true"/>
  </div>;
 }
