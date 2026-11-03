@@ -228,3 +228,16 @@
  .aperture-loader{animation:ap-failsafe 0s linear .45s forwards!important}
  .aperture-loader--out{visibility:hidden!important}
 }
+
+/* Mobile motion keeps same optical design but avoids delaying Largest Contentful Paint. */
+@media(max-width:720px) and (prefers-reduced-motion:no-preference){
+ .aperture-loader__ring--outer,.aperture-loader__ring--oblique,
+ .aperture-loader__ring--fine,.aperture-loader__core,
+ .aperture-loader__core-light,.aperture-loader__timeline span{
+  animation-duration:.68s;
+ }
+ .aperture-loader--out{animation-duration:.44s}
+ .aperture-loader--out .aperture-loader__panel--left,
+ .aperture-loader--out .aperture-loader__panel--right{animation-duration:.44s}
+ .aperture-loader--out .aperture-loader__machine{animation-duration:.42s}
+}
