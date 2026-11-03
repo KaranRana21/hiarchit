@@ -102,6 +102,8 @@ async function run(width){
   });
   if(width===1440){
    await test('desktop cursor and 3D hover',async()=>{
+    await page.locator('#selected-work').scrollIntoViewIfNeeded();
+    await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:15000});
     const stage=page.locator('.stage-wrap[data-fx-tilt]');
     await stage.scrollIntoViewIfNeeded();
     await stage.hover({position:{x:150,y:130}});
@@ -119,7 +121,9 @@ async function run(width){
     await page.waitForFunction(()=>document.querySelector('.gravity-primary-action')?.classList.contains('fx-magnetic-active'),null,{timeout:4000});
     const value=await action.evaluate(el=>el.style.getPropertyValue('--fx-mx'));
     assert.ok(value.endsWith('px'),'magnetic CSS value missing: '+value);
-    const exhibition=page.locator('.exhibition');
+    await page.locator('#selected-work').scrollIntoViewIfNeeded();
+    const exhibition=page.locator('section.exhibition[data-hydrated="true"]');
+    await exhibition.waitFor({state:'attached',timeout:15000});
     await exhibition.scrollIntoViewIfNeeded();
     await page.waitForFunction(()=>document.querySelector('.exhibition')?.classList.contains('fx-chapter-live'),null,{timeout:5000});
     assert.equal(await page.locator('.fx-cursor').count(),1);
@@ -133,6 +137,8 @@ async function run(width){
    });
   }
   await test('project index',async()=>{
+   await page.locator('#selected-work').scrollIntoViewIfNeeded();
+   await page.locator('button.toc-item').first().waitFor({state:'attached',timeout:15000});
    assert.equal(await page.locator('button.toc-item').count(),4);
    await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
    if(width===320){await page.locator('button.toc-item').nth(1).focus();await page.keyboard.press('Enter');}
