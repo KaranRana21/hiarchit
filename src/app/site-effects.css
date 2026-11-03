@@ -1,0 +1,94 @@
+/* INTERACTION SYSTEM / 2026: authored motion, GPU transforms, no new runtime libs.
+ * Hierarchy: 3D hero > chapter reveals > spatial case studies > pointer feedback.
+ * Only fine pointers get follower and tilt. Reduced motion never hides content.
+ */
+:root{--fx-ease:cubic-bezier(.19,1,.22,1);--fx-mint:#ccebdd}
+.fx-cursor{pointer-events:none;position:fixed;inset:0;z-index:8500;opacity:0;visibility:hidden}
+.fx-cursor-halo,.fx-cursor-dot{position:fixed;left:0;top:0;transform:translate3d(-100px,-100px,0);border-radius:50%;pointer-events:none}
+.fx-cursor-halo{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;color:#fff;mix-blend-mode:difference;transition:width .26s var(--fx-ease),height .26s var(--fx-ease),border-width .26s,background .26s}
+.fx-cursor-halo>span{font:800 9px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.045em;opacity:0;transition:opacity .18s}
+.fx-cursor-dot{width:5px;height:5px;background:#fff;mix-blend-mode:difference}
+html.fx-cursor-on .fx-cursor{visibility:visible;opacity:1}
+html.fx-cursor-on,html.fx-cursor-on body,html.fx-cursor-on a,html.fx-cursor-on button,html.fx-cursor-on [data-cursor]{cursor:none!important}
+html.fx-cursor-hover .fx-cursor-halo{width:57px;height:57px;background:#ffffff24;border-width:1px}
+html.fx-cursor-hover .fx-cursor-dot{opacity:0}
+html.fx-cursor-label .fx-cursor-halo{width:74px;height:74px;background:#f3fff3;color:#0c1617;mix-blend-mode:normal;border-color:#f3fff3}
+html.fx-cursor-label .fx-cursor-halo>span{opacity:1}
+html.fx-cursor-label .fx-cursor-dot{opacity:0}
+.fx-backtop{--top-progress:0;position:fixed;right:max(22px,env(safe-area-inset-right));bottom:max(24px,env(safe-area-inset-bottom));width:60px;height:60px;z-index:220;display:grid;place-items:center;cursor:pointer;color:#e6f7ef;border:1px solid #d4e5d15b;border-radius:50%;background:#101b20ed;box-shadow:0 18px 45px #0005;opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,16px,0) scale(.88);transition:opacity .3s ease,transform .46s var(--fx-ease),visibility .3s,background .2s,border-color .2s;isolation:isolate}
+.fx-backtop-visible{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0) scale(1)}
+.fx-backtop:hover{background:#283d42;border-color:#e5f4ed;transform:translate3d(0,-4px,0)}
+.fx-backtop:active{transform:scale(.96)}
+.fx-backtop>svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.fx-backtop circle{fill:none;stroke-width:1.8;transform-origin:center}
+.fx-backtop-track{stroke:#d9eee326}
+.fx-backtop-progress{stroke:#d4ebda;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--top-progress));transition:stroke-dashoffset .11s linear}
+.fx-backtop>span{font:400 27px/1 'Arial',sans-serif;transform:translateY(-2px);transition:transform .22s ease}
+.fx-backtop:hover>span{transform:translateY(-6px)}
+.fx-backtop:focus-visible{outline:2px solid #fff;outline-offset:5px}
+/* Perspective shifts are applied only on direct pointer intent. */
+[data-fx-tilt]{--fx-rx:0deg;--fx-ry:0deg;--fx-px:0px;--fx-py:0px;transform:perspective(1300px) rotateX(var(--fx-rx)) rotateY(var(--fx-ry));transition:transform .64s var(--fx-ease);transform-style:preserve-3d}
+[data-fx-tilt].fx-tilting{transition:transform .12s ease-out;will-change:transform}
+[data-fx-tilt] .concept-no,[data-fx-tilt] .portrait-number,[data-fx-tilt] .concept-bottom{transform:translateZ(18px)}
+/* Physical-looking light / texture motion, confined to a handful of stage objects. */
+@keyframes fx-orbital-drift{
+ 0%{transform:rotateX(53deg) rotateZ(40deg) translate3d(0,0,0)}
+ 50%{transform:rotateX(58deg) rotateZ(54deg) translate3d(0,-7px,0)}
+ 100%{transform:rotateX(53deg) rotateZ(40deg) translate3d(0,0,0)}
+}
+@keyframes fx-tower-drift{
+ 0%{transform:rotate(-13deg) translate3d(0,0,0)}
+ 50%{transform:rotate(-10deg) translate3d(0,-8px,0)}
+ 100%{transform:rotate(-13deg) translate3d(0,0,0)}
+}
+@keyframes fx-ai-drift{
+ 0%{transform:rotate(34deg) rotateY(-20deg) translate3d(0,0,0)}
+ 50%{transform:rotate(37deg) rotateY(-9deg) translate3d(0,-8px,0)}
+ 100%{transform:rotate(34deg) rotateY(-20deg) translate3d(0,0,0)}
+}
+@keyframes fx-language-drift{
+ 0%{transform:rotateY(-25deg) translateY(0)}
+ 50%{transform:rotateY(-17deg) translateY(-9px)}
+ 100%{transform:rotateY(-25deg) translateY(0)}
+}
+@keyframes fx-signal-orbit{
+ 0%{transform:rotateX(71deg) rotate(-30deg)}
+ 50%{transform:rotateX(59deg) rotate(2deg)}
+ 100%{transform:rotateX(71deg) rotate(-30deg)}
+}
+@keyframes fx-signal-float{
+ 0%,100%{transform:translate3d(0,0,0)}
+ 50%{transform:translate3d(0,-12px,0)}
+}
+@media(min-width:901px) and (hover:hover) and (pointer:fine){
+ .stage-layer.layer-active .civic-globe{animation:fx-orbital-drift 8.4s ease-in-out infinite}
+ .stage-layer.layer-active .building-object{animation:fx-tower-drift 9.5s ease-in-out infinite}
+ .stage-layer.layer-active .ai-crystal{animation:fx-ai-drift 9s ease-in-out infinite}
+ .stage-layer.layer-active .language-script{animation:fx-language-drift 8s ease-in-out infinite}
+ .experience-halo{animation:fx-signal-orbit 13s ease-in-out infinite}
+ .experience-graphic>span{animation:fx-signal-float 7.5s ease-in-out infinite}
+ .case-art .concept-art{transition:transform .85s var(--fx-ease),box-shadow .65s ease}
+ .case-art:hover .concept-art{transform:rotateY(0deg) rotateX(0deg) translate3d(0,-8px,0);box-shadow:15px 29px 68px #0009}
+ .discipline-line h3,.journal-entry h3,.toc-item .toc-arrow{transition:transform .3s var(--fx-ease)}
+ .discipline-line:hover h3{transform:translate3d(7px,0,0)}
+ .journal-entry:hover h3{transform:translate3d(8px,0,0)}
+ .toc-item:hover .toc-arrow{transform:translate3d(3px,-3px,0)}
+ .gravity-secondary-action:hover span{transform:translate3d(3px,-3px,0)}
+}
+/* Low-power modes keep every feature usable and maintain authored static geometry. */
+@media(max-width:900px),(hover:none),(pointer:coarse){
+ .fx-cursor{display:none!important}
+ [data-fx-tilt]{transform:none!important}
+ .fx-backtop{right:17px;bottom:max(18px,env(safe-area-inset-bottom));width:54px;height:54px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ .fx-cursor{display:none!important}
+ [data-fx-tilt]{transform:none!important;transition:none!important}
+ .fx-backtop,.fx-backtop>span,.fx-backtop circle{transition:none!important}
+ .stage-layer.layer-active .civic-globe,
+ .stage-layer.layer-active .building-object,
+ .stage-layer.layer-active .ai-crystal,
+ .stage-layer.layer-active .language-script,
+ .experience-halo,.experience-graphic>span{animation:none!important}
+}
