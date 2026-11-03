@@ -28,8 +28,8 @@ export function DeferredExhibition(){
   const el=container.current;
   if(!el)return;
   if(!('IntersectionObserver' in window)){
-   const timer=window.setTimeout(()=>setVisible(true),0);
-   return()=>window.clearTimeout(timer);
+   const timer=setTimeout(()=>setVisible(true),0);
+   return()=>clearTimeout(timer);
   }
   const observer=new IntersectionObserver(entries=>{
    if(entries.some(e=>e.isIntersecting)){setVisible(true);observer.disconnect()}
