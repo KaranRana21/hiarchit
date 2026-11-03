@@ -140,10 +140,16 @@ async function run(width){
    });
    await test('WebGL studio sculpture active',async()=>{
     await page.waitForTimeout(1900);
-    const state=await page.evaluate(()=>({
-      capable:!!document.createElement('canvas').getContext('webgl2'),
-      live:!!document.querySelector('.artifact-webgl.webgl-live')
-    }));
+    const state=await page.evaluate(()=>{
+      const gl=document.createElement('canvas').getContext('webgl2',{failIfMajorPerformanceCaveat:true});
+      const debug=gl?.getExtension('WEBGL_debug_renderer_info');
+      const renderer=debug?String(gl?.getParameter(debug.UNMASKED_RENDERER_WEBGL)||''):'';
+      return {
+       capable:!!gl&&!/swiftshader|llvmpipe|softpipe|software rasterizer/i.test(renderer),
+       live:!!document.querySelector('.artifact-webgl.webgl-live'),
+       renderer
+      };
+    });
     console.log('SCULPTURE STATE '+JSON.stringify(state));
     if(state.capable)assert.equal(state.live,true,'WebGL supported but scene not active');
    });
