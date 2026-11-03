@@ -7,6 +7,7 @@ import {ProjectArt} from '@/components/ProjectArt';
 export function SpatialWork(){
  const [current,setCurrent]=useState(0);
  const touchX=useRef<number|null>(null);
+ const mouseX=useRef<number|null>(null);
  const readyRef=useRef<HTMLElement|null>(null);
  useEffect(()=>{readyRef.current?.setAttribute('data-hydrated','true')},[]);
  const total=projects.length;
@@ -22,7 +23,7 @@ export function SpatialWork(){
       {projects.map((p,i)=><button key={p.id} type="button" className={'toc-item '+(current===i?'toc-active':'')} aria-pressed={current===i} onPointerDown={()=>pick(i)} onClick={()=>pick(i)}><span>{p.id}</span><span>{p.name}</span><span className="toc-arrow">↗</span></button>)}
       <div className="toc-footer micro-label">DRAG / SELECT / USE ARROWS</div>
     </div>
-    <div className="stage-wrap" onTouchStart={e=>{touchX.current=e.touches[0]?.clientX??null}} onTouchEnd={e=>{if(touchX.current===null)return;const delta=(e.changedTouches[0]?.clientX??0)-touchX.current;if(Math.abs(delta)>44)go(delta<0?1:-1);touchX.current=null}}>
+    <div className="stage-wrap" data-fx-tilt data-cursor="drag" onPointerDown={e=>{if(e.pointerType==='mouse')mouseX.current=e.clientX}} onPointerUp={e=>{if(e.pointerType!=='mouse'||mouseX.current===null)return;const delta=e.clientX-mouseX.current;if(Math.abs(delta)>78)go(delta<0?1:-1);mouseX.current=null}} onPointerLeave={()=>{mouseX.current=null}} onTouchStart={e=>{touchX.current=e.touches[0]?.clientX??null}} onTouchEnd={e=>{if(touchX.current===null)return;const delta=(e.changedTouches[0]?.clientX??0)-touchX.current;if(Math.abs(delta)>44)go(delta<0?1:-1);touchX.current=null}}>
       <div className="stage-backdrop" aria-hidden="true"/><div className="stage-back-number" aria-hidden="true">{selected.id}</div>
       <div className="project-stage">
        {projects.map((p,i)=>{const offset=(i-current+total)%total;return <div key={p.id} className={'stage-layer '+(offset===0?'layer-active':offset===1?'layer-next':'layer-away')} aria-hidden={offset!==0} style={{'--depth':String(offset)} as React.CSSProperties}><ProjectArt project={p}/></div>})}
@@ -35,7 +36,7 @@ export function SpatialWork(){
       <p className="spotlight-lead" key={selected.id+'lead'}>{selected.lead}</p>
       <p className="spotlight-description">{selected.description}</p>
       <div className="spotlight-meta"><span className="micro-label">ROLE / {selected.role}</span><span className="micro-label">{selected.tags.join(' · ')}</span></div>
-      <a href={selected.url} target="_blank" rel="noopener noreferrer" className="outline-link">{selected.url.includes('github.com')?'Explore source':'Visit project'}<span>↗</span></a>
+      <a href={selected.url} target="_blank" rel="noopener noreferrer" className="outline-link" data-cursor="view">{selected.url.includes('github.com')?'Explore source':'Visit project'}<span>↗</span></a>
     </div>
    </div>
    <div className="exhibition-end"><span className="micro-label">ALL PROJECTS / ALL ROLES / ALL OUTCOMES</span><Link href="/work" className="text-link">View full project archive <span>↗</span></Link></div>
