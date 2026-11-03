@@ -1,0 +1,50 @@
+name: Lighthouse Performance 90+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  performance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install site
+        run: npm install --no-audit --no-fund
+      - name: Build production site
+        run: npm run build
+      - name: Install Lighthouse CLI
+        run: npm install --no-save --no-audit --no-fund lighthouse@12.8.0
+      - name: Verify Chrome
+        run: |
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+          google-chrome --version || true
+      - name: Run audited Lighthouse budgets on every route/device
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          set -euo pipefail
+          npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/archit-lighthouse-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3000/ > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:3000/ > /dev/null
+          node scripts/lighthouse-audit.mjs
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-performance-results
+          path: lighthouse-artifacts/
+          if-no-files-found: ignore
