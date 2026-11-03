@@ -71,7 +71,7 @@ export function SiteLoader(){
     <span className="aperture-loader__locator aperture-loader__locator--a"/>
     <span className="aperture-loader__locator aperture-loader__locator--b"/>
    </div>
-   <div className="aperture-loader__right-caption"><span>002 / 026</span><span>BUILDING<br/>WHAT'S<br/>NEXT.</span></div>
+   <div className="aperture-loader__right-caption"><span>002 / 026</span><span>BUILDING<br/>WHAT&apos;S<br/>NEXT.</span></div>
   </main>
   <footer className="aperture-loader__foot">
    <div className="aperture-loader__foot-title"><strong>BEYOND THE INTERFACE</strong><span>BY ARCHIT JAIN</span></div>
