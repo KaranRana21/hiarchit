@@ -23,9 +23,10 @@ async function run(width){
   await test('premium intro loader',async()=>{
    const intro=page.locator('[data-testid="site-loader"]');
    if(width===1440 && await intro.count()){
-    assert.equal(await intro.locator('.intro-loader__word').count(),2);
-    assert.match(await intro.locator('.intro-loader__word').first().innerText(),/ARCHIT/);
-    assert.equal(await intro.locator('button.intro-loader__skip').count(),1);
+    assert.equal(await intro.locator('.aperture-loader__ring').count(),3);
+    assert.equal(await intro.locator('.aperture-loader__panel').count(),2);
+    assert.match(await intro.locator('.aperture-loader__core-glyph').innerText(),/AJ/);
+    assert.equal(await intro.locator('button.aperture-loader__skip').count(),1);
    }
    // WebGL startup can starve timers on headless software rendering.
    // Verify eventual dismiss, not strict millisecond timing.
@@ -34,12 +35,12 @@ async function run(width){
   });
   if(width===390){
    await test('skip intro works',async()=>{
-    await page.evaluate(()=>sessionStorage.removeItem('archit-intro-seen-v1'));
+    await page.evaluate(()=>sessionStorage.removeItem('archit-aperture-intro-v2'));
     await page.reload({waitUntil:'domcontentloaded'});
     const intro=page.locator('[data-testid="site-loader"]');
     await intro.waitFor({state:'visible',timeout:5000});
-    await page.waitForFunction(()=>Number(document.querySelector('.intro-loader__value')?.textContent?.replace('%',''))>1,null,{timeout:5000});
-    await intro.locator('button.intro-loader__skip').dispatchEvent('click');
+    await page.waitForTimeout(160);
+    await intro.locator('button.aperture-loader__skip').dispatchEvent('click');
     await intro.waitFor({state:'detached',timeout:5000});
    });
   }
