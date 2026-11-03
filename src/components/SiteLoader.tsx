@@ -11,10 +11,13 @@ import {useCallback,useEffect,useRef,useState} from 'react';
 const KEY='archit-aperture-intro-v2';
 const INTRO_MS=1430;
 const EXIT_MS=860;
+const MOBILE_INTRO_MS=680;
+const MOBILE_EXIT_MS=440;
 
 export function SiteLoader(){
  const [phase,setPhase]=useState<'enter'|'exit'|'done'>('enter');
  const closed=useRef(false);
+ const compactRef=useRef(false);
  const exitTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
 
  const finish=useCallback((immediate=false)=>{
@@ -23,19 +26,20 @@ export function SiteLoader(){
   try{sessionStorage.setItem(KEY,'1')}catch{}
   if(immediate){setPhase('done');return}
   setPhase('exit');
-  exitTimer.current=setTimeout(()=>setPhase('done'),EXIT_MS);
+  exitTimer.current=setTimeout(()=>setPhase('done'),compactRef.current?MOBILE_EXIT_MS:EXIT_MS);
  },[]);
 
  useEffect(()=>{
   let seen=false;
   try{seen=sessionStorage.getItem(KEY)==='1'}catch{}
+  compactRef.current=window.matchMedia('(max-width: 720px)').matches;
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData=!!(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
   if(seen||reduced||saveData){
    const next=window.setTimeout(()=>finish(true),0);
    return()=>window.clearTimeout(next);
   }
-  const intro=window.setTimeout(()=>finish(),INTRO_MS);
+  const intro=window.setTimeout(()=>finish(),compactRef.current?MOBILE_INTRO_MS:INTRO_MS);
   // Failsafe independent of decorative CSS.
   const hardStop=window.setTimeout(()=>{if(!closed.current)finish(true)},3800);
   return()=>{window.clearTimeout(intro);window.clearTimeout(hardStop)};
