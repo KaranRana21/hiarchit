@@ -145,3 +145,16 @@ html.fx-cursor-label .fx-cursor-dot{opacity:0}
  .portrait-frame::after,.statement-frame::after{display:none!important}
  .portrait-stamp{animation:none!important}
 }
+
+/* Hydration-safe placeholder: same chapter heading/space, 3D gallery prefetches near view. */
+.exhibition-deferred{min-height:720px;display:block;padding-block:90px 80px}
+.exhibition-deferred .exhibition-title-row{margin-bottom:45px}
+.exhibition-deferred .text-link{display:inline-flex;margin-top:8px}
+@media(max-width:720px){
+ .exhibition-deferred{min-height:780px;padding-block:65px 60px}
+}
+/* Skip offscreen style/layout calculations, without removing content or animations. */
+@supports(content-visibility:auto){
+ .discipline,.trajectory,.journal-feature,.closing,
+ .case-list,.journal-index{content-visibility:auto;contain-intrinsic-size:auto 1100px}
+}
