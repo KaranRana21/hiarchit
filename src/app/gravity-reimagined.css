@@ -195,3 +195,14 @@ h1,h2,h3{font-family:var(--display)}
  .gravity-hero-deck{animation:gravity-mobile-readable .42s cubic-bezier(.23,1,.32,1) both;animation-delay:.04s}
  .gravity-headline-line{animation-duration:.57s}
 }
+
+/* Mobile hero: full motion direction retained with shorter LCP-critical paint window. */
+@media(max-width:720px) and (prefers-reduced-motion:no-preference){
+ .gravity-hero-presence,.gravity-hero-name,.gravity-headline-line,
+ .gravity-hero-deck,.gravity-hero-actions{animation-duration:.52s}
+ .gravity-hero-name{animation-delay:.03s}
+ .gravity-headline-first{animation-delay:.05s}
+ .gravity-headline-second{animation-delay:.08s}
+ .gravity-hero-deck{animation-delay:.1s}
+ .gravity-hero-actions{animation-delay:.14s}
+}
