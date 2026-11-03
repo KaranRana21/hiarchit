@@ -84,7 +84,7 @@ export function SiteEnhancements(){
   const fine=window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)').matches;
   const tiltCleanup:Array<()=>void>=[];
   if(fine&&!reduced&&!saveData){
-   document.querySelectorAll<HTMLElement>('[data-fx-tilt]').forEach(el=>{
+   document.querySelectorAll<HTMLElement>('[data-fx-tilt]:not(.stage-wrap)').forEach(el=>{
     let rect:DOMRect|null=null,frame=0,px=0,py=0;
     const enter=()=>{rect=el.getBoundingClientRect();el.classList.add('fx-tilting');};
     const move=(e:PointerEvent)=>{
