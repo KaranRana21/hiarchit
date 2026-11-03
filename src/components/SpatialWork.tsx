@@ -9,7 +9,15 @@ export function SpatialWork(){
  const touchX=useRef<number|null>(null);
  const mouseX=useRef<number|null>(null);
  const readyRef=useRef<HTMLElement|null>(null);
- useEffect(()=>{readyRef.current?.setAttribute('data-hydrated','true')},[]);
+ useEffect(()=>{
+  const el=readyRef.current;if(!el)return;
+  el.setAttribute('data-hydrated','true');
+  const observer=new IntersectionObserver(entries=>{
+   el.classList.toggle('fx-chapter-live',entries[0]?.isIntersecting??false);
+  },{threshold:.06});
+  observer.observe(el);
+  return()=>observer.disconnect();
+ },[]);
  const total=projects.length;
  const go=(direction:number)=>setCurrent(i=>(i+direction+total)%total);
  const pick=(i:number)=>setCurrent(i);
