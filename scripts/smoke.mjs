@@ -94,7 +94,7 @@ async function run(width){
     window.scrollTo(0,document.documentElement.scrollHeight);
    });
    await page.waitForFunction(()=>document.querySelector('.fx-backtop-visible')!==null,null,{timeout:6000});
-   const button=page.getByRole('button',{name:'Back to top'});
+   const button=page.locator('button.fx-backtop');
    await button.waitFor({state:'visible',timeout:6000});
    await button.click();
    await page.waitForFunction(()=>window.scrollY<55,null,{timeout:7000});
