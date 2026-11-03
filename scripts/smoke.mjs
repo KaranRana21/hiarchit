@@ -88,6 +88,29 @@ async function run(width){
    assert.ok((await page.locator('.artifact-stage').boundingBox())?.width>80);
    if(width===320)assert.equal(await page.locator('.artifact-webgl.webgl-live').count(),0);
   });
+  await test('working floating back-to-top',async()=>{
+   await page.evaluate(()=>{
+    document.documentElement.style.scrollBehavior='auto';
+    window.scrollTo(0,document.documentElement.scrollHeight);
+   });
+   await page.waitForFunction(()=>document.querySelector('.fx-backtop-visible')!==null,null,{timeout:6000});
+   const button=page.getByRole('button',{name:'Back to top'});
+   assert.ok(await button.isVisible());
+   await button.click();
+   await page.waitForFunction(()=>window.scrollY<55,null,{timeout:7000});
+   assert.equal(await button.getAttribute('aria-label'),'Back to top');
+  });
+  if(width===1440){
+   await test('desktop cursor and 3D hover',async()=>{
+    const stage=page.locator('.stage-wrap[data-fx-tilt]');
+    await stage.scrollIntoViewIfNeeded();
+    await stage.hover({position:{x:150,y:130}});
+    await page.waitForFunction(()=>document.documentElement.classList.contains('fx-cursor-label'),null,{timeout:4000});
+    assert.equal((await page.locator('.fx-cursor-halo span').innerText()),'DRAG');
+    const ry=await stage.evaluate(el=>el.style.getPropertyValue('--fx-ry'));
+    assert.ok(ry.length>0,'tilt CSS variable not updated');
+   });
+  }
   await test('project index',async()=>{
    assert.equal(await page.locator('button.toc-item').count(),4);
    await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
@@ -131,6 +154,7 @@ async function run(width){
    });
    await test('full work route',async()=>{
     await page.goto(origin+'/work');assert.equal(await page.locator('article.case').count(),4);
+    assert.equal(await page.locator('.case-art[data-fx-tilt]').count(),4);
    });
    await test('journal articles',async()=>{
     await page.goto(origin+'/journal');assert.equal(await page.locator('a.article-row').count(),6);
