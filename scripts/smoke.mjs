@@ -28,6 +28,9 @@ async function run(width){
     assert.match(await intro.locator('.aperture-loader__core-glyph').innerText(),/AJ/);
     assert.equal(await intro.locator('button.aperture-loader__skip').count(),1);
    }
+   if([390,1440].includes(width) && await intro.isVisible()){
+    await page.screenshot({path:dir+'/aperture-intro-'+width+'.png'});
+   }
    // WebGL startup can starve timers on headless software rendering.
    // Verify eventual dismiss, not strict millisecond timing.
    await intro.waitFor({state:'detached',timeout:20000});
