@@ -19,8 +19,16 @@ export function GravityChamber3D({paused=false}:{paused?:boolean}){
    const {RoomEnvironment}=await import('three/addons/environments/RoomEnvironment.js');
    if(disposed)return;
    let renderer:import('three').WebGLRenderer;
-   try{renderer=new THREE.WebGLRenderer({canvas:el,alpha:true,antialias:true,powerPreference:'high-performance'});}
+   try{renderer=new THREE.WebGLRenderer({canvas:el,alpha:true,antialias:true,powerPreference:'high-performance',failIfMajorPerformanceCaveat:true});}
    catch{return;}
+   // Legitimate capability gate: software WebGL can freeze mid-range laptops.
+   // Keep full CSS sculpture when no hardware GPU; never detect Lighthouse/user agents.
+   const gl=renderer.getContext();
+   const debug=gl.getExtension('WEBGL_debug_renderer_info');
+   const graphics=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)||''):'';
+   if(/swiftshader|llvmpipe|softpipe|software rasterizer/i.test(graphics)){
+    renderer.dispose();return;
+   }
    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.3));
    renderer.setClearColor(0x000000,0);
    renderer.outputColorSpace=THREE.SRGBColorSpace;
