@@ -111,6 +111,27 @@ async function run(width){
     assert.ok(ry.length>0,'tilt CSS variable not updated');
    });
   }
+  if(width===1440){
+   await test('magnetic action and chapter 3D motion',async()=>{
+    const action=page.locator('.gravity-primary-action');
+    await action.scrollIntoViewIfNeeded();
+    await action.hover({position:{x:30,y:12}});
+    await page.waitForFunction(()=>document.querySelector('.gravity-primary-action')?.classList.contains('fx-magnetic-active'),null,{timeout:4000});
+    const value=await action.evaluate(el=>el.style.getPropertyValue('--fx-mx'));
+    assert.ok(value.endsWith('px'),'magnetic CSS value missing: '+value);
+    const exhibition=page.locator('.exhibition');
+    await exhibition.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>document.querySelector('.exhibition')?.classList.contains('fx-chapter-live'),null,{timeout:5000});
+    assert.equal(await page.locator('.fx-cursor').count(),1);
+   });
+  }
+  if(width===360){
+   await test('reduced motion keeps content and removes cursor',async()=>{
+    assert.equal(await page.locator('h1').isVisible(),true);
+    const css=await page.locator('.fx-cursor').evaluate(el=>getComputedStyle(el).display);
+    assert.equal(css,'none');
+   });
+  }
   await test('project index',async()=>{
    assert.equal(await page.locator('button.toc-item').count(),4);
    await page.locator('section.exhibition[data-hydrated="true"]').waitFor({state:'attached',timeout:12000});
