@@ -1,6 +1,6 @@
 /* ART DIRECTION: THE GRAVITY CHAMBER — optical-engineering exhibition, by Artful. */
 /* Typeface hierarchy: bold contemporary display; readable, high-authority utility copy. */
-:root{--display:'Syne','Arial Black',sans-serif;--body:'Plus Jakarta Sans','Arial',sans-serif;--mono:'IBM Plex Mono','Consolas',monospace;--gravity-ice:#c0e8df;--gravity-ink:#0b1118}
+:root{--display:var(--font-syne),'Syne','Arial Black',sans-serif;--body:var(--font-jakarta),'Plus Jakarta Sans','Arial',sans-serif;--mono:var(--font-ibm),'IBM Plex Mono','Consolas',monospace;--gravity-ice:#c0e8df;--gravity-ink:#0b1118}
 body{font-family:var(--body);font-weight:550;letter-spacing:-.008em}
 h1,h2,h3{font-family:var(--display)}
 .micro-label{font-family:var(--mono);font-size:11px;font-weight:600;line-height:1.65;letter-spacing:.055em}
