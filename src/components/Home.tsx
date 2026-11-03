@@ -2,14 +2,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {Header,Footer} from '@/components/Chrome';
 import {HeroReborn} from '@/components/HeroReborn';
-import {SpatialWork} from '@/components/SpatialWork';
+import {DeferredExhibition} from '@/components/DeferredExhibition';
 import {person,outcomes,competencies,achievements,articles,originalArticleUrl} from '@/lib/content';
 
 export function Home(){return <><Header/><main>
  <HeroReborn/>
  <section className="statement" id="statement"><div className="frame statement-frame"><div className="statement-intro"><span className="micro-label">01 / DESIGN IS ENGINEERING</span><span className="statement-asterisk">✳</span></div><p>COMPLEX SYSTEMS.<br/><em>EFFORTLESS</em> EXPERIENCES.</p><div className="statement-sub"><span className="micro-label">THE PRACTICE</span><p>Archit Jain is a frontend engineer bridging product intuition and technical precision. Building interfaces that hold up when scale gets serious.</p></div></div></section>
  <div className="achievement-rail"><div className="frame rail-grid">{outcomes.map((s,i)=><div className="rail-stat" key={s.value}><span className="micro-label">0{i+1} / EVIDENCE</span><strong>{s.value}</strong><div><b>{s.label}</b><span>{s.desc}</span></div></div>)}</div></div>
- <SpatialWork/>
+ <DeferredExhibition/>
  <section className="portrait-section" id="about"><div className="frame"><div className="section-heading-row dark-heading"><span className="micro-label">03 / HUMAN, NOT MACHINE</span><span className="micro-label">THE PERSON BEHIND THE PIXELS</span></div><div className="portrait-layout">
   <div className="portrait-copy"><span className="kicker micro-label">MEET YOUR ENGINEER</span><h2>AN ENGINEER<br/>WITH AN <em>EYE.</em></h2><p className="portrait-lead">Not just another line of code. An instinct for how technology should <i>feel.</i></p><p>{person.bio}</p><div className="portrait-actions"><a href={person.resume} target="_blank" rel="noopener noreferrer" className="black-pill">VIEW RÉSUMÉ <span>↗</span></a><a href={person.linkedin} target="_blank" rel="noopener noreferrer" className="portrait-social">CONNECT ON LINKEDIN ↗</a></div></div>
   <div className="portrait-frame" data-fx-tilt><div className="portrait-number micro-label">SUBJECT / ARCHIT JAIN</div><div className="portrait-figure"><Image unoptimized src={person.portrait} alt="Portrait of Archit Jain, frontend engineer" width={770} height={960} loading="lazy"/></div><div className="portrait-frame-bottom micro-label"><span>01 / THE HUMAN</span><span>FRONTEND ENGINEER</span></div><div className="portrait-stamp">A<span>J</span></div></div>
