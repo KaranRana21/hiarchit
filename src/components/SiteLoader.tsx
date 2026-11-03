@@ -2,86 +2,81 @@
 
 import {useCallback,useEffect,useRef,useState} from 'react';
 
-const KEY='archit-intro-seen-v1';
-const DURATION=1650;
-const EXIT=690;
+/**
+ * APERTURE / AJ — deliberate first-visit visual ceremony, not download progress.
+ * One short sequence per session; skips on reduced motion, Save-Data and repeat visits.
+ * Hero remains rendered underneath. No body scroll locks or JS-dependent blank screen.
+ */
+const KEY='archit-aperture-intro-v2';
+const INTRO_MS=1320;
+const EXIT_MS=610;
 
-/** One-time brand ceremony. Counter is intro timing, not claimed download progress. */
 export function SiteLoader(){
- const [phase,setPhase]=useState<'loading'|'exiting'|'hidden'>('loading');
- const [progress,setProgress]=useState(0);
- const dismissed=useRef(false);
- const exitTimeout=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const [phase,setPhase]=useState<'enter'|'exit'|'done'>('enter');
+ const closed=useRef(false);
+ const exitTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
 
- const finish=useCallback((instant=false)=>{
-  if(dismissed.current)return;
-  dismissed.current=true;
+ const finish=useCallback((immediate=false)=>{
+  if(closed.current)return;
+  closed.current=true;
   try{sessionStorage.setItem(KEY,'1')}catch{}
-  setProgress(100);
-  if(instant){setPhase('hidden');return}
-  setPhase('exiting');
-  exitTimeout.current=setTimeout(()=>setPhase('hidden'),EXIT);
+  if(immediate){setPhase('done');return}
+  setPhase('exit');
+  exitTimer.current=setTimeout(()=>setPhase('done'),EXIT_MS);
  },[]);
 
  useEffect(()=>{
   let seen=false;
   try{seen=sessionStorage.getItem(KEY)==='1'}catch{}
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData=(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
-  if(seen||reduced||saveData){const id=window.setTimeout(()=>finish(true),0);return()=>window.clearTimeout(id)}
-  const oldOverflow=document.body.style.overflow;
-  document.body.style.overflow='hidden';
-  let raf=0,finished=false;
-  const began=performance.now();
-  const tick=(now:number)=>{
-   const fraction=Math.min(1,(now-began)/DURATION);
-   // Deliberately measured motion with slight deceleration at end.
-   const eased=1-Math.pow(1-fraction,2.6);
-   setProgress(Math.min(100,Math.floor(eased*100)));
-   if(fraction>=1){finished=true;finish();return}
-   raf=requestAnimationFrame(tick);
-  };
-  raf=requestAnimationFrame(tick);
-  // Hard upper bound: no loader should trap audience after an animation hiccup.
-  const deadline=setTimeout(()=>{if(!finished)finish()},3000);
-  return()=>{
-   cancelAnimationFrame(raf);
-   clearTimeout(deadline);
-   document.body.style.overflow=oldOverflow;
-  };
+  const saveData=!!(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData;
+  if(seen||reduced||saveData){
+   const next=window.setTimeout(()=>finish(true),0);
+   return()=>window.clearTimeout(next);
+  }
+  const intro=window.setTimeout(()=>finish(),INTRO_MS);
+  // Failsafe independent of decorative CSS.
+  const hardStop=window.setTimeout(()=>{if(!closed.current)finish(true)},3200);
+  return()=>{window.clearTimeout(intro);window.clearTimeout(hardStop)};
  },[finish]);
 
- useEffect(()=>{
-  if(phase!=='hidden')return;
-  document.body.classList.remove('site-loading');
-  document.body.style.removeProperty('overflow');
- },[phase]);
+ useEffect(()=>()=>{if(exitTimer.current)clearTimeout(exitTimer.current)},[]);
 
- useEffect(()=>()=>{if(exitTimeout.current)clearTimeout(exitTimeout.current)},[]);
+ if(phase==='done')return null;
 
- if(phase==='hidden')return null;
-
- return <div className={'intro-loader '+(phase==='exiting'?'intro-loader--exit':'')} data-testid="site-loader" data-phase={phase} role="status" aria-label="Introducing Archit Jain portfolio" aria-live="off">
-  <div className="intro-loader__texture" aria-hidden="true"/>
-  <div className="intro-loader__header" aria-hidden="true">
-   <span>AJ<span className="intro-loader__registered">®</span> / PORTFOLIO</span>
-   <span>EST. IN CURIOSITY <span className="intro-loader__cross">✳</span></span>
-  </div>
-  <div className="intro-loader__center" aria-hidden="true">
-   <div className="intro-loader__eyebrow"><i/> THE HUMAN INTERFACE <span>01 — 01</span></div>
-   <div className="intro-loader__hero">
-    <span className="intro-loader__word intro-loader__word--one">ARCHIT<span className="intro-loader__mark">.</span></span>
-    <span className="intro-loader__word intro-loader__word--two">JAIN</span>
+ return <div className={'aperture-loader'+(phase==='exit'?' aperture-loader--out':'')}
+  data-testid="site-loader" data-phase={phase} role="status"
+  aria-label="Introducing Archit Jain portfolio" aria-live="off">
+  <div className="aperture-loader__panel aperture-loader__panel--left" aria-hidden="true"/>
+  <div className="aperture-loader__panel aperture-loader__panel--right" aria-hidden="true"/>
+  <div className="aperture-loader__grid" aria-hidden="true"/>
+  <header className="aperture-loader__top" aria-hidden="true">
+   <span className="aperture-loader__brand"><span className="aperture-loader__brand-mark">AJ</span><span className="aperture-loader__brand-rule"/> ARCHIT JAIN</span>
+   <span className="aperture-loader__top-note">A PERSONAL SPACE<br/>FOR IDEAS & INTERFACES</span>
+  </header>
+  <main className="aperture-loader__composition" aria-hidden="true">
+   <div className="aperture-loader__left-caption"><span>01 — 01</span><span>DESIGN<br/>THROUGH<br/>ENGINEERING.</span></div>
+   <div className="aperture-loader__machine">
+    <div className="aperture-loader__guide aperture-loader__guide--horizontal"/>
+    <div className="aperture-loader__guide aperture-loader__guide--vertical"/>
+    <span className="aperture-loader__tick aperture-loader__tick--north">Nº 001</span>
+    <span className="aperture-loader__tick aperture-loader__tick--east">FORM / FUNCTION</span>
+    <div className="aperture-loader__ring aperture-loader__ring--outer"/>
+    <div className="aperture-loader__ring aperture-loader__ring--oblique"/>
+    <div className="aperture-loader__ring aperture-loader__ring--fine"/>
+    <div className="aperture-loader__core">
+     <span className="aperture-loader__core-light"/>
+     <span className="aperture-loader__core-glyph">A<span>J</span><i>.</i></span>
+    </div>
+    <span className="aperture-loader__locator aperture-loader__locator--a"/>
+    <span className="aperture-loader__locator aperture-loader__locator--b"/>
    </div>
-   <div className="intro-loader__subline">ENGINEERING <span>×</span> INSTINCT</div>
-  </div>
-  <div className="intro-loader__bottom">
-   <div className="intro-loader__reading" aria-hidden="true"><span>CRAFTING FIRST IMPRESSION</span><span>INDIA / WORLDWIDE</span></div>
-   <div className="intro-loader__progress" aria-hidden="true">
-    <div className="intro-loader__progress-track"><div style={{transform:`scaleX(${progress/100})`}} className="intro-loader__progress-fill"/></div>
-    <span className="intro-loader__value">{String(progress).padStart(3,'0')}<small>%</small></span>
-   </div>
-   <button type="button" className="intro-loader__skip" onClick={()=>finish(true)}>SKIP INTRO <span aria-hidden="true">↗</span></button>
-  </div>
+   <div className="aperture-loader__right-caption"><span>002 / 026</span><span>BUILDING<br/>WHAT'S<br/>NEXT.</span></div>
+  </main>
+  <footer className="aperture-loader__foot">
+   <div className="aperture-loader__foot-title"><strong>BEYOND THE INTERFACE</strong><span>BY ARCHIT JAIN</span></div>
+   <div className="aperture-loader__timeline" aria-hidden="true"><span/></div>
+   <button className="aperture-loader__skip" type="button" onClick={()=>finish(true)}>SKIP INTRO <span aria-hidden="true">↗</span></button>
+  </footer>
  </div>;
 }
