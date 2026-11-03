@@ -36,6 +36,12 @@ jobs:
           done
           curl -fsS http://127.0.0.1:3000/ > /dev/null
           node scripts/smoke.mjs
+          # Strict Lighthouse lab gate — mobile and desktop both >=90.
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium || find "$HOME/.cache/ms-playwright" -type f -name chrome | head -1)"
+          test -n "$CHROME_PATH"
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:3000/ --only-categories=performance --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=smoke-artifacts/lighthouse-mobile.json --quiet
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:3000/ --preset=desktop --only-categories=performance --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=smoke-artifacts/lighthouse-desktop.json --quiet
+          node scripts/lighthouse-budget.mjs
       - name: Upload browser screenshots
         if: always()
         uses: actions/upload-artifact@v4
