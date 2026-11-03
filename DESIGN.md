@@ -35,3 +35,18 @@
 **Motion engineering:** 30fps max, DPR 1.45, Intersection/visibility-gated, no external textures or 3D models, WebGL fallback for <=720px, reduced motion, saveData. Pausing motion stops idle movement while retaining drag control. No loader, no hidden text before hydration.
 
 **Functional requirement:** All existing Archit content, photo, projects, verified data, resume, socials, Work and Journal retained. Preview noindex. QA widths 320–1920, no clipping, readable metadata, keyboard/touch navigation, correct resume/email links, WebGL activation and fallback.
+
+
+## November 2026 — APERTURE / Opening ceremony v2
+
+**Feedback:** Prior loader rejected. Oversized ARCHIT/JAIN title and simulated 0–100 meter looked generic. Retire entirely.
+
+**Thesis:** A portfolio made by an engineer should open like a precision instrument, not a splash screen. First impression: *the creative mind behind a machine*.
+
+**Art direction:** Three titanium concentric orbits in architectural perspective, a suspended optical lens with discreet AJ glyph, invisible centering crosshairs, a quiet timeline, and two full-height panels that separate into the existing 3D hero. Visual tie to the site's glass/metal sculpture without duplicating hero or covering Archit's copy.
+
+**Motion:** Single 1.32s non-looping calibration then 610ms panel retraction. No fake network progress, no sound, no long interstitial, no 3D/animation library import. All geometry is CSS. Functional skip immediately removes overlay; repeat visitors see no ceremony in same session; reduced-motion and Save-Data bypass. Fully rendered content always exists underneath. 3.8s CSS fail-open if hydration/JS breaks.
+
+**Contrast/accessibility:** Legible 10–12px captions with weight 600+, visible focus on skip, decorative orbital artwork hidden from screen readers. No scroll lock, no artificial interaction delay on repeat visits.
+
+**Quality gate:** Verify 320/360/390/430/768/1024/1440/1920px, no overflow, session replay, skip click, reduced-motion shortcut, primary site navigation and WebGL hero unaffected.
